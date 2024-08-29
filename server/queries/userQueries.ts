@@ -2,7 +2,7 @@
 
 const getUserByID = `
 SELECT * FROM users 
-WHERE id = $1;
+WHERE _id = $1;
 `;
 
 const createUser = `
@@ -19,7 +19,7 @@ JOIN users ON users._id = responses.user_id
 JOIN options ON options._id = responses.option_id
 JOIN questions ON questions._id = options.question_id
 JOIN polls ON polls._id = questions.poll_id
-WHERE users.username = 'Tom'
+WHERE users.username = $1;
 `;
 
 module.exports = {
