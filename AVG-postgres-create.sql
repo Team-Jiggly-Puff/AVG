@@ -16,7 +16,7 @@ CREATE TABLE public.users (
     "age" INT,
     "email" VARCHAR(255) NOT NULL,
     "region" VARCHAR(255),
-    "priviledge" VARCHAR(255) NOT NULL DEFAULT 'user',
+    "privilege" VARCHAR(255) NOT NULL DEFAULT 'user',
     "password" VARCHAR(255),
     CONSTRAINT "unique_email" UNIQUE ("email"), 
     CONSTRAINT "unique_username" UNIQUE ("username")
