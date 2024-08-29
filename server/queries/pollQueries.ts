@@ -25,3 +25,31 @@ JOIN questions q ON q._id = options.question_id
 JOIN polls p ON p._id = q.poll_id;
 WHERE p.topic = $1;
 `;
+
+const getTopics = `
+SELECT topic, created_by 
+FROM polls;
+`;
+
+const getQuestionsByPoll = `
+SELECT question, options_type
+FROM questions
+WHERE poll_id = $1;
+`;
+
+const getOptionsByQuestions = `
+SELECT option, data_type
+FROM options
+WHERE question_id = $1;
+`;
+
+module.exports = {
+    postPoll,
+    postQuestion,
+    postOptions,
+    getPollsFull,
+    getTopics,
+    getQuestionsByPoll,
+    getOptionsByQuestions,
+}
+
