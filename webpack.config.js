@@ -4,20 +4,23 @@ const Dotenv = require('dotenv-webpack');
 
 module.exports = {
   mode: process.env.NODE_ENV,
-  entry: "./client/index.ts",
+  entry: "./client/index.tsx",
   plugins: [new HtmlWebpackPlugin({
     title: 'AVG (Development)',
     template: './client/index.html'
   }), new Dotenv()],
+  resolve: {
+    extensions: [".ts", ".tsx", ".js"],
+  },
   module: {
     rules: [
       {
-        test: /\.(ts|tsx)$/,
+        test: /\.tsx?$/,
         exclude: /node_modules/,
         use: 'ts-loader'
       },
       {
-        test: /\.[ac]ss$/i,
+        test: /\.css$/i,
         use: [
           // Creates `style` nodes from JS strings
           "style-loader",
@@ -31,7 +34,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "build"),
     filename: "bundle.js",
-    // publicPath: '/build/',
+    publicPath: '/build/',
   },
   devServer: {
     static: {
