@@ -11,7 +11,7 @@ VALUES ($1, $2, $3, $4, $5, $6)
 RETURNING _id;
 `;
 
-//Right now this is not being sorted by anything. might need to have it sorted by topic or something
+// Right now this is not being sorted by anything. might need to have it sorted by topic or something
 const getUserResponses = `
 SELECT users.username, polls.topic, questions.question, options.option, option_id
 FROM responses
