@@ -1,49 +1,39 @@
-const path = require("path");
+const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const Dotenv = require('dotenv-webpack');
 
 module.exports = {
-  mode: 'production',
-  entry: "./client/index.ts",
-  plugins: [new HtmlWebpackPlugin({
-    title: 'AVG (Development)',
-    template: './public/index.html'
-  }), new Dotenv()],
+  mode: 'development',
+  entry: './client/index.tsx', // Ensure correct entry point
+  output: {
+    path: path.resolve(__dirname, 'build'),
+    filename: 'bundle.js',
+    publicPath: '/',
+  },
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js'], // Ensure '.ts' and '.tsx' are included
+  },
   module: {
     rules: [
       {
-        test: /\.(ts|tsx)$/,
+        test: /\.tsx?$/,
+        use: 'ts-loader',
         exclude: /node_modules/,
-        use: 'ts-loader'
       },
       {
-        test: /\.[ac]ss$/i,
-        use: [
-          // Creates `style` nodes from JS strings
-          "style-loader",
-          // Translates CSS into CommonJS
-          "css-loader",
-          // Compiles Sass to CSS
-        ],
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'], // Handle CSS if needed
       },
     ],
   },
-  output: {
-    path: path.resolve(__dirname, "build"),
-    filename: "bundle.js",
-    // publicPath: '/build/',
-  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './public/index.html',
+    }),
+  ],
   devServer: {
     static: {
-      directory: path.join(__dirname),
+      directory: path.join(__dirname, 'build'),
     },
-    proxy: [
-      {
-        context: ['/api'],
-        secure: false,
-        target: 'http://localhost:3000',
-      },
-    ],
-    hot: true
+    hot: true,
   },
 };
