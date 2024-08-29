@@ -18,7 +18,7 @@ VALUES ($1, $2, $3)
 RETURNING _id;
 `;
 
-const getPollsFull = `
+const getPollFull = `
 SELECT  option, question_id, data_type, q.question, q.poll_id, p.topic, p.created_by
 FROM options
 JOIN questions q ON q._id = options.question_id
@@ -47,7 +47,7 @@ module.exports = {
     postPoll,
     postQuestion,
     postOptions,
-    getPollsFull,
+    getPollFull,
     getTopics,
     getQuestionsByPoll,
     getOptionsByQuestions,
