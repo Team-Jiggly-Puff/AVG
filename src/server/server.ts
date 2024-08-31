@@ -1,8 +1,9 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
 import path from 'path';
 import dotenv from 'dotenv';
+import CustomError from '../types/types';
+const { getSpecificPoll, createPoll, getAllTopics } = require('./controllers/pollController.ts');
 dotenv.config();
-
 const app: Express = express();
 const port = process.env.PORT || 3000
 
@@ -28,16 +29,28 @@ app.get('*',(req: Request, res: Response) => {
     res.sendFile(path.join(__dirname,'..','..','build','index.html'));
 });
 
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-    console.error(err.stack); 
-    res.status(err.status || 500).json({
-      error: {
-        message: err.message || 'Internal Server Error',
-        stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
-      },
-    });
-  });
+// This is just for testing purposes
 
+app.get('/api/pollTest', getSpecificPoll, (req: Request, res: Response, next: NextFunction) => {
+    res.status(200).json(res.locals.poll);
+});
+
+app.get('/api/topicsTest', getAllTopics, (req: Request, res: Response, next: NextFunction) => {
+    res.status(200).json(res.locals.topics);
+});
+
+//_______________________________________________________
+
+app.use((err: CustomError, req: Request, res: Response, next: NextFunction) => {
+    const status = err.status || 500;
+    res.status(status).json({
+        error: {
+            message: err.message || 'An unexpected middleware error occurred',
+            status,
+            log: err.log || 'Express error handler caught unknown middleware error'
+        }
+    })
+})
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });

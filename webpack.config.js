@@ -25,9 +25,12 @@ module.exports = {
     ],
   },
   devServer: {
-    static: {
-      directory: path.join(__dirname, '/build'),
-    },
     hot: true,
+    proxy: [
+      {
+        context: ['/'],
+        target: 'http://localhost:3000',
+      },
+    ]
   },
 };
