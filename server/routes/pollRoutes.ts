@@ -7,8 +7,8 @@ router.get('/all', (req: Request, res: Response, next: NextFunction) => {
 
 });
 
-router.get('/poll/:id', getSpecificPoll, (req: Request, res: Response, next: NextFunction) => {
-
+router.get('/:id', getSpecificPoll, (req: Request, res: Response, next: NextFunction) => {
+    res.status(200).json(res.locals.polls);
 });
 
 router.post('/new', createPoll, (req: Request, res: Response, next: NextFunction) => {

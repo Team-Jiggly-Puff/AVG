@@ -13,5 +13,8 @@ router.post('/signup', createUser, (req: Request, res: Response, next: NextFunct
 });
 
 // potentially a sign out route?
+router.post('/signout', (req: Request, res: Response, next: NextFunction) => {
+    
+})
 
 export default router;

@@ -22,8 +22,8 @@ const getPollFull = `
 SELECT  option, question_id, data_type, q.question, q.poll_id, p.topic, p.created_by
 FROM options
 JOIN questions q ON q._id = options.question_id
-JOIN polls p ON p._id = q.poll_id;
-WHERE p.topic = $1;
+JOIN polls p ON p._id = q.poll_id
+WHERE p._id = $1;
 `;
 
 const getTopics = `
