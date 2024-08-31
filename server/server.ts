@@ -2,6 +2,8 @@ import express, { Express, Request, Response, NextFunction } from 'express';
 import path from 'path';
 import dotenv from 'dotenv';
 import CustomError from './types';
+import userRoutes from './routes/userRoutes';
+import pollRoutes from './routes/pollRoutes';
 
 dotenv.config();
 
@@ -10,7 +12,10 @@ const port = process.env.PORT || 3000
 
 app.use(express.json());
 
-app.use(express.static(path.join(__dirname, '../client')));
+app.use(express.static(path.join(__dirname, '../build')));
+
+app.use('/api/users', userRoutes);
+app.use('/api/polls', pollRoutes);
 
 app.get('/', (req: Request, res: Response, next: NextFunction) => {
     try {
