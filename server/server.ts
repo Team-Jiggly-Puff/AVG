@@ -2,6 +2,7 @@ import express, { Express, Request, Response, NextFunction } from 'express';
 import path from 'path';
 import dotenv from 'dotenv';
 import CustomError from './types';
+const { getSpecificPoll, createPoll, getAllTopics } = require('./controllers/pollController.ts');
 
 dotenv.config();
 
@@ -22,6 +23,18 @@ app.get('/', (req: Request, res: Response, next: NextFunction) => {
         });
     }
 });
+
+// This is just for testing purposes
+
+app.get('/api/pollTest', getSpecificPoll, (req: Request, res: Response, next: NextFunction) => {
+    res.status(200).json(res.locals.poll);
+});
+
+app.get('/api/topicsTest', getAllTopics, (req: Request, res: Response, next: NextFunction) => {
+    res.status(200).json(res.locals.topics);
+});
+
+//_______________________________________________________
 
 app.use((err: CustomError, req: Request, res: Response, next: NextFunction) => {
     const status = err.status || 500;

@@ -1,7 +1,7 @@
 const db = require('../models/dbClient.ts');
 const { NextFunction } = require('express');
 import { Request, Response, NextFunction } from 'express';
-const { postPoll, postQuestion, postOptions, getPollFull } = require('../queries/pollQueries.ts');
+const { postPoll, postQuestion, postOptions, getPollFull, getTopics } = require('../queries/pollQueries.ts');
 
 const createPoll = async (req: Request, res: Response, next: NextFunction) => {
   const user = res.locals.user;
@@ -47,13 +47,16 @@ const createPoll = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const getSpecificPoll = async (req: Request, res: Response, next: NextFunction) => {
-  const { topic } = req.params ? req.params : req.body;
+  const { pollID } =  req.body;
 
   try{
-    const poll = await db.query(getPollFull, [topic]);
+    console.log('pollID:', pollID);
+    const poll = await db.query(getPollFull, [pollID]);
+    console.log('poll:', poll.rows);
     res.locals.poll = poll.rows;
     next();
   } catch(err){
+    console.log('err:', err); 
     return next({
       log: 'Error getting poll',
       message: { err: 'Server error getting poll'}
@@ -61,7 +64,21 @@ const getSpecificPoll = async (req: Request, res: Response, next: NextFunction) 
   }
 };
 
+const getAllTopics = async (req: Request, res: Response, next: NextFunction) => {
+  try{
+    const polls = await db.query(getTopics);
+    res.locals.topics = polls.rows;
+    next();
+  } catch(err){
+    return next({
+      log: 'Error getting polls',
+      message: { err: 'Server error getting polls'}
+    });
+  }
+}
+
 module.exports = {
   createPoll,
   getSpecificPoll,
+  getAllTopics
 }
