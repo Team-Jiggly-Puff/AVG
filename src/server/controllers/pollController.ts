@@ -1,8 +1,8 @@
-const db = require('../models/dbClient.ts');
+const db = require('../models/dbClient');
 const { NextFunction } = require('express');
 import { Request, Response, NextFunction } from 'express';
 const { postPoll, postQuestion, postOptions, getPollFull, getTopics } = require('../queries/pollQueries.ts');
-import { Poll, Question, Option } from '../types';
+import { Poll, Question, Option } from '../../common/types/types';
 
 
 const createPoll = async (req: Request, res: Response, next: NextFunction) => {
