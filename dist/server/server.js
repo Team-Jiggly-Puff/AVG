@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const path_1 = __importDefault(require("path"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const { getSpecificPoll, createPoll, getAllTopics } = require('./controllers/pollController');
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 3000;
@@ -29,13 +30,22 @@ app.get('*', (req, res) => {
     console.log(path_1.default.join(__dirname, '..', '..', 'build', 'index.html'));
     res.sendFile(path_1.default.join(__dirname, '..', '..', 'build', 'index.html'));
 });
+// This is just for testing purposes
+app.get('/api/pollTest', getSpecificPoll, (req, res, next) => {
+    res.status(200).json(res.locals.poll);
+});
+app.get('/api/topicsTest', getAllTopics, (req, res, next) => {
+    res.status(200).json(res.locals.topics);
+});
+//_______________________________________________________
 app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(err.status || 500).json({
+    const status = err.status || 500;
+    res.status(status).json({
         error: {
-            message: err.message || 'Internal Server Error',
-            stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
-        },
+            message: err.message || 'An unexpected middleware error occurred',
+            status,
+            log: err.log || 'Express error handler caught unknown middleware error'
+        }
     });
 });
 app.listen(port, () => {

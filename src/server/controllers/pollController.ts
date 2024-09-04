@@ -1,7 +1,7 @@
-const db = require('../models/dbClient.ts');
+const db = require('../models/dbClient');
 const { NextFunction } = require('express');
 import { Request, Response, NextFunction } from 'express';
-const { postPoll, postQuestion, postOptions, getPollFull, getTopics } = require('../queries/pollQueries.ts');
+const { postPoll, postQuestion, postOptions, getPollFull, getTopics } = require('../queries/pollQueries');
 
 const createPoll = async (req: Request, res: Response, next: NextFunction) => {
   const user = res.locals.user;

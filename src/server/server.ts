@@ -2,7 +2,7 @@ import express, { Express, Request, Response, NextFunction } from 'express';
 import path from 'path';
 import dotenv from 'dotenv';
 import CustomError from '../types/types';
-const { getSpecificPoll, createPoll, getAllTopics } = require('./controllers/pollController.ts');
+const { getSpecificPoll, createPoll, getAllTopics } = require('./controllers/pollController');
 dotenv.config();
 const app: Express = express();
 const port = process.env.PORT || 3000
