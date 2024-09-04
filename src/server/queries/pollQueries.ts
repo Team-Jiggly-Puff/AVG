@@ -27,7 +27,7 @@ WHERE p._id = $1;
 `;
 
 const getTopics = `
-SELECT topic, created_by 
+SELECT topic, created_by, _id
 FROM polls;
 `;
 
