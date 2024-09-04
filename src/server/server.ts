@@ -1,12 +1,10 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
 import path from 'path';
 import dotenv from 'dotenv';
-import CustomError from './types';
+import CustomError from '../common/types/types';
 import userRoutes from './routes/userRoutes';
 import pollRoutes from './routes/pollRoutes';
-
 dotenv.config();
-
 const app: Express = express();
 const port = process.env.PORT || 3000
 
@@ -19,7 +17,8 @@ app.use('/api/polls', pollRoutes);
 
 app.get('/', (req: Request, res: Response, next: NextFunction) => {
     try {
-        //res.send('index.html');
+        console.log('I AM GETTING HIT');
+        res.send(path.join(__dirname,'..','build','index.html'));
     } catch (err) {
         return next({
             log: 'Error sending index.html to client',
@@ -27,6 +26,7 @@ app.get('/', (req: Request, res: Response, next: NextFunction) => {
         });
     }
 });
+
 
 // This is just for testing purposes
 
@@ -39,6 +39,11 @@ app.get('/', (req: Request, res: Response, next: NextFunction) => {
 // });
 
 //_______________________________________________________
+app.get('*',(req: Request, res: Response) => {
+    console.log('I AM GETTING HIT');
+    console.log(path.join(__dirname,'..','..','build','index.html'));
+    res.sendFile(path.join(__dirname,'..','..','build','index.html'));
+});
 
 app.use((err: CustomError, req: Request, res: Response, next: NextFunction) => {
     const status = err.status || 500;
@@ -50,7 +55,6 @@ app.use((err: CustomError, req: Request, res: Response, next: NextFunction) => {
         }
     })
 })
-
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });
