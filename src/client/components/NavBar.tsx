@@ -27,7 +27,7 @@ const NavBar = () => {
             </Link>
           </li>
          <li className="nav-item" onClick={()=>{console.log('hi')}}>
-            <Link className="nav-link" to="/poll">
+            <Link className="nav-link" to="/polls">
               Polls
             </Link>
           </li>
