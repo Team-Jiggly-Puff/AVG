@@ -4,6 +4,10 @@ import dotenv from 'dotenv';
 import CustomError from '../common/types/types';
 import userRoutes from './routes/userRoutes';
 import pollRoutes from './routes/pollRoutes';
+const { getSpecificPoll, createPoll, getAllTopics } = require('./controllers/pollController.ts');
+const { getUser } = require('./controllers/userController.ts');
+
+
 dotenv.config();
 const app: Express = express();
 const port = process.env.PORT || 3000
@@ -30,13 +34,18 @@ app.get('/', (req: Request, res: Response, next: NextFunction) => {
 
 // This is just for testing purposes
 
-// app.get('/api/pollTest', getSpecificPoll, (req: Request, res: Response, next: NextFunction) => {
-//     res.status(200).json(res.locals.poll);
-// });
+app.get('/api/pollTest', getSpecificPoll, (req: Request, res: Response, next: NextFunction) => {
+    res.status(200).json(res.locals.poll);
+});
 
-// app.get('/api/topicsTest', getAllTopics, (req: Request, res: Response, next: NextFunction) => {
-//     res.status(200).json(res.locals.topics);
-// });
+app.get('/api/topicsTest', getAllTopics, (req: Request, res: Response, next: NextFunction) => {
+    res.status(200).json(res.locals.topics);
+});
+
+app.post('/api/postPollTest', getUser, createPoll, (req: Request, res: Response, next: NextFunction) => {
+  res.status(200).json(res.locals.newPoll);
+});
+
 
 //_______________________________________________________
 app.get('*',(req: Request, res: Response) => {
