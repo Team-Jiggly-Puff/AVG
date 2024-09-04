@@ -2,23 +2,27 @@ const db = require('../models/dbClient.ts');
 const { NextFunction } = require('express');
 import { Request, Response, NextFunction } from 'express';
 const { postPoll, postQuestion, postOptions, getPollFull, getTopics } = require('../queries/pollQueries.ts');
+import { Poll, Question, Option } from '../types';
+
 
 const createPoll = async (req: Request, res: Response, next: NextFunction) => {
   const user = res.locals.user;
+  console.log('user:', user);
   const { newPollObj } = req.body;
   const { topic, questions } = newPollObj;
 
   // a single client needs to be used over a pool for transactional queries
-  const client = db.connect();
-
+  
+  const client = await db.connect();
   try{
-    await client.query('BEGIN');
+    
+    await client.query('BEGIN').then(() => console.log('Transaction started'));
     
     const newPoll = await client.query(postPoll, [topic, user._id]);
     const newPoll_id = newPoll.rows[0]._id;
     console.log('newPoll_id:', newPoll_id);
 
-    //loop through each question to insert to db based on the poll id
+    // loop through each question to insert to db based on the poll id
     for (let question of questions){
       const newQuestion = await client.query(postQuestion, [question.question, newPoll_id, question.options_type]);
       const newQuestion_id = newQuestion.rows[0]._id;
@@ -50,10 +54,39 @@ const getSpecificPoll = async (req: Request, res: Response, next: NextFunction) 
   const { pollID } =  req.body;
 
   try{
-    console.log('pollID:', pollID);
+    
     const poll = await db.query(getPollFull, [pollID]);
     console.log('poll:', poll.rows);
-    res.locals.poll = poll.rows;
+    const options = poll.rows; 
+
+      // now we need to format the data to be a nested object
+    const pollObj: Poll = {
+      topic: options[0].topic,
+      created_by: options[0].created_by,
+      questions: []
+    };
+
+    //this will be the questions pushed to the questions array
+    let questionObj: Question = {
+      question: options[0].question,
+      options_type: options[0].options_type,
+      options: [],
+    };
+
+    //iterating through all options, pushing them to the questionObj,
+    //and pushing questionObj to the pollObj when the question changes
+    options.forEach((option:Option, index:number) => {
+      if (option.question !== questionObj.question || index === options.length - 1){
+        pollObj.questions.push(questionObj);
+        questionObj = {
+          question: option.question,
+          options_type: option.options_type,
+          options: []
+        };
+      }
+      questionObj.options.push(option.option);
+    });
+    res.locals.poll = pollObj;
     next();
   } catch(err){
     console.log('err:', err); 

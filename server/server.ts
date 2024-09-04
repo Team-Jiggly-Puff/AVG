@@ -3,7 +3,7 @@ import path from 'path';
 import dotenv from 'dotenv';
 import CustomError from './types';
 const { getSpecificPoll, createPoll, getAllTopics } = require('./controllers/pollController.ts');
-
+const { getUser } = require('./controllers/userController.ts');
 dotenv.config();
 
 const app: Express = express();
@@ -33,6 +33,11 @@ app.get('/api/pollTest', getSpecificPoll, (req: Request, res: Response, next: Ne
 app.get('/api/topicsTest', getAllTopics, (req: Request, res: Response, next: NextFunction) => {
     res.status(200).json(res.locals.topics);
 });
+
+app.post('/api/postPollTest', getUser, createPoll, (req: Request, res: Response, next: NextFunction) => {
+  res.status(200).json(res.locals.newPoll);
+});
+
 
 //_______________________________________________________
 

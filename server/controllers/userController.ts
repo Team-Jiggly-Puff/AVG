@@ -1,13 +1,20 @@
 import { Request, Response, NextFunction } from 'express';
 const { postUser, getUserByID } = require('../queries/userQueries.ts');
 const db = require('../models/dbClient.ts');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
+const generateToken = (userID: number) => {
+  return jwt.sign({ userID }, process.env.JWT_SECRET, { expiresIn: '3h' });
+};
 
 
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
   const { username, email, password, age, region } = req.body;
 
   try {
-    const newUser = await db.query(postUser, [username, email, password, age, region]);
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = await db.query(postUser, [username, email, hashedPassword, age, region]);
     res.locals.newUser = newUser.rows[0];
     next();
   } catch (err) {
@@ -19,11 +26,14 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const getUser = async (req: Request, res: Response, next: NextFunction) => {
-  const { id } = req.params;
+  console.log('req.body in getUser:', req.body);
+  const { user_id } = req.body;
 
   try {
-    const user = await db.query(getUser, [id]);
+    const user = await db.query(getUserByID, [user_id]);
     res.locals.user = user.rows[0];
+    console.log('user:', user.rows[0]);
+    console.log('res.locals.user:', res.locals.user);
     next();
   } catch (err) {
     return next({
@@ -32,6 +42,7 @@ const getUser = async (req: Request, res: Response, next: NextFunction) => {
     });
   }
 };
+
 
 module.exports = {
   createUser,

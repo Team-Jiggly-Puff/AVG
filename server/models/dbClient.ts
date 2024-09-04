@@ -1,6 +1,5 @@
 const { Pool } = require('pg');
 require('dotenv').config();
-
 const URI = process.env.SQL_URI;
 console.log('URI:', URI);
 
