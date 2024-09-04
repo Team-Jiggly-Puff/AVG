@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 
-const { createUser, getUser } = require('../controllers/userController.ts');
+const { createUser, getUser } = require('../controllers/userController');
 
 const router = express.Router();
 
@@ -14,7 +14,7 @@ router.post('/signup', createUser, (req: Request, res: Response, next: NextFunct
 
 // potentially a sign out route?
 router.post('/signout', (req: Request, res: Response, next: NextFunction) => {
-    
+
 })
 
 export default router;
