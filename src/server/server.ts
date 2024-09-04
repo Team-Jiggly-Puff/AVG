@@ -1,19 +1,23 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
 import path from 'path';
 import dotenv from 'dotenv';
-import CustomError from '../types/types';
-const { getSpecificPoll, createPoll, getAllTopics } = require('./controllers/pollController');
+import CustomError from '../common/types/types';
+import userRoutes from './routes/userRoutes';
+import pollRoutes from './routes/pollRoutes';
 dotenv.config();
 const app: Express = express();
 const port = process.env.PORT || 3000
 
 app.use(express.json());
 
-app.use(express.static(path.join(__dirname, '..','..','client')));
-app.use(express.static(path.join(__dirname,'..','..','build')));
+app.use(express.static(path.join(__dirname, '../build')));
+
+app.use('/api/users', userRoutes);
+app.use('/api/polls', pollRoutes);
+
 app.get('/', (req: Request, res: Response, next: NextFunction) => {
     try {
-        console.log('I AM GETTING HT');
+        console.log('I AM GETTING HIT');
         res.send(path.join(__dirname,'..','build','index.html'));
     } catch (err) {
         return next({
@@ -23,23 +27,23 @@ app.get('/', (req: Request, res: Response, next: NextFunction) => {
     }
 });
 
+
+// This is just for testing purposes
+
+// app.get('/api/pollTest', getSpecificPoll, (req: Request, res: Response, next: NextFunction) => {
+//     res.status(200).json(res.locals.poll);
+// });
+
+// app.get('/api/topicsTest', getAllTopics, (req: Request, res: Response, next: NextFunction) => {
+//     res.status(200).json(res.locals.topics);
+// });
+
+//_______________________________________________________
 app.get('*',(req: Request, res: Response) => {
     console.log('I AM GETTING HIT');
     console.log(path.join(__dirname,'..','..','build','index.html'));
     res.sendFile(path.join(__dirname,'..','..','build','index.html'));
 });
-
-// This is just for testing purposes
-
-app.get('/api/pollTest', getSpecificPoll, (req: Request, res: Response, next: NextFunction) => {
-    res.status(200).json(res.locals.poll);
-});
-
-app.get('/api/topicsTest', getAllTopics, (req: Request, res: Response, next: NextFunction) => {
-    res.status(200).json(res.locals.topics);
-});
-
-//_______________________________________________________
 
 app.use((err: CustomError, req: Request, res: Response, next: NextFunction) => {
     const status = err.status || 500;
