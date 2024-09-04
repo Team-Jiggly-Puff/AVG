@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import CustomError from '../common/types/types';
 import userRoutes from './routes/userRoutes';
 import pollRoutes from './routes/pollRoutes';
+const {getSpecificPoll,getAllTopics,createPoll} = require('./controllers/pollController');
 dotenv.config();
 const app: Express = express();
 const port = process.env.PORT || 3000
@@ -18,7 +19,7 @@ app.use('/api/polls', pollRoutes);
 app.get('/', (req: Request, res: Response, next: NextFunction) => {
     try {
         console.log('I AM GETTING HIT');
-        res.send(path.join(__dirname,'..','build','index.html'));
+        res.sendFile(path.join(__dirname,'..','..','build','index.html'));
     } catch (err) {
         return next({
             log: 'Error sending index.html to client',
@@ -30,13 +31,13 @@ app.get('/', (req: Request, res: Response, next: NextFunction) => {
 
 // This is just for testing purposes
 
-// app.get('/api/pollTest', getSpecificPoll, (req: Request, res: Response, next: NextFunction) => {
-//     res.status(200).json(res.locals.poll);
-// });
+app.get('/api/pollTest', getSpecificPoll, (req: Request, res: Response, next: NextFunction) => {
+    res.status(200).json(res.locals.poll);
+});
 
-// app.get('/api/topicsTest', getAllTopics, (req: Request, res: Response, next: NextFunction) => {
-//     res.status(200).json(res.locals.topics);
-// });
+app.get('/api/topicsTest', getAllTopics, (req: Request, res: Response, next: NextFunction) => {
+    res.status(200).json(res.locals.topics);
+});
 
 //_______________________________________________________
 app.get('*',(req: Request, res: Response) => {

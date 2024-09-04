@@ -6,8 +6,9 @@ const Poll = () => {
     <h1>Question:</h1>
     <div></div>
     <div></div>
-    <input className="input" placeholder="Put your answer to the question here"></input>
-    <button onClick={()=>{console.log('submitted')}}></button>
+    <input className="input" placeholder="Input Answer"></input>
+    <div></div>
+    <button onClick={()=>{console.log('submitted')}}>Submit</button>
     </>
   )
 }
