@@ -51,12 +51,13 @@ const createPoll = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const getSpecificPoll = async (req: Request, res: Response, next: NextFunction) => {
-  const { pollID } =  req.body;
+  const { id } =  req.params;
+  console.log('req.params:', req.params);
 
   try{
     
-    const poll = await db.query(getPollFull, [pollID]);
-    console.log('poll:', poll.rows);
+    const poll = await db.query(getPollFull, [id]);
+    // console.log('poll:', poll.rows);
     const options = poll.rows; 
 
       // now we need to format the data to be a nested object
@@ -87,6 +88,7 @@ const getSpecificPoll = async (req: Request, res: Response, next: NextFunction) 
       questionObj.options.push(option.option);
     });
     res.locals.poll = pollObj;
+    console.log('pollObj:', res.locals.poll);
     next();
   } catch(err){
     console.log('err:', err); 
