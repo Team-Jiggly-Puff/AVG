@@ -1,8 +1,10 @@
 import React from "react";
 import { useEffect,useState } from "react";
-
+import { Link } from "react-router-dom";
+import PollCard from "./PollCard";
 interface Topic{
-  topic:String
+  topic:string;
+  _id:string;
 }
 
 const PollsPage = () => {
@@ -16,10 +18,19 @@ const PollsPage = () => {
     fetchTopics();
   }, []);
   console.log(topics);
+  const gridStyle: React.CSSProperties = {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', // Responsive columns
+    gap: '10px', // Space between grid items
+  };
   return(
-    <>
-    {topics.map((topic)=>{})}
-    </>
+    <div style={gridStyle}>
+    {topics.map((topic)=>{
+      {console.log('pollcard generated')}
+      return <Link key={topic._id} style={{color:'black'}}to={`/poll/${topic._id}`}><PollCard key={topic._id} pollId={topic._id} topic={topic.topic}/></Link>
+    })}
+    </div>
   )
 }
+
 export default PollsPage;

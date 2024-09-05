@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 
-const { createUser, getUser } = require('../controllers/userController.ts');
+const { createUser, getUser } = require('../controllers/userController');
 
 const router = express.Router();
 

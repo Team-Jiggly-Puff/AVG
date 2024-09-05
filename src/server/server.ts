@@ -4,9 +4,8 @@ import dotenv from 'dotenv';
 import CustomError from '../common/types/types';
 import userRoutes from './routes/userRoutes';
 import pollRoutes from './routes/pollRoutes';
-const { getSpecificPoll, createPoll, getAllTopics } = require('./controllers/pollController.ts');
-const { getUser } = require('./controllers/userController.ts');
-
+const { getSpecificPoll, createPoll, getAllTopics } = require('./controllers/pollController');
+const { getUser } = require('./controllers/userController');
 
 dotenv.config();
 const app: Express = express();
@@ -14,14 +13,13 @@ const port = process.env.PORT || 3000
 
 app.use(express.json());
 
-app.use(express.static(path.join(__dirname, '../build')));
+app.use(express.static(path.join(__dirname,'..','..','build')));
 
 app.use('/api/users', userRoutes);
 app.use('/api/polls', pollRoutes);
 
 app.get('/', (req: Request, res: Response, next: NextFunction) => {
     try {
-        console.log('I AM GETTING HIT');
         res.sendFile(path.join(__dirname,'..','..','build','index.html'));
     } catch (err) {
         return next({
@@ -31,10 +29,10 @@ app.get('/', (req: Request, res: Response, next: NextFunction) => {
     }
 });
 
-
+app.get('/bundle.js',(req:Request,res:Response) => {res.sendFile(path.join(__dirname,'..','..','build','bundle.js'))});
 // This is just for testing purposes
 
-app.get('/api/pollTest', getSpecificPoll, (req: Request, res: Response, next: NextFunction) => {
+app.get('/api/pollTest/:id', getSpecificPoll, (req: Request, res: Response, next: NextFunction) => {
     res.status(200).json(res.locals.poll);
 });
 
@@ -48,12 +46,17 @@ app.post('/api/postPollTest', getUser, createPoll, (req: Request, res: Response,
 
 
 //_______________________________________________________
-app.get('*',(req: Request, res: Response) => {
-    console.log('I AM GETTING HIT');
-    console.log(path.join(__dirname,'..','..','build','index.html'));
-    res.sendFile(path.join(__dirname,'..','..','build','index.html'));
-});
+app.get('*', (req, res) => {
+    const url = req.url;
 
+    // Check if the request is for a static file (e.g., .js, .css)
+    if (url.endsWith('.js') || url.endsWith('.css') || url.endsWith('.png') || url.endsWith('.jpg')) {
+        res.sendFile(path.join(__dirname, '..', '..', 'build', url));
+    } else {
+        // Otherwise, serve index.html for React Router to handle
+        res.sendFile(path.join(__dirname, '..', '..', 'build', 'index.html'));
+    }
+});
 app.use((err: CustomError, req: Request, res: Response, next: NextFunction) => {
     const status = err.status || 500;
     res.status(status).json({

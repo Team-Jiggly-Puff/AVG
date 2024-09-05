@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-const { postUser, getUserByID } = require('../queries/userQueries.ts');
-const db = require('../models/dbClient.ts');
+const { postUser, getUserByID } = require('../queries/userQueries');
+const db = require('../models/dbClient');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 

@@ -1,16 +1,22 @@
 import React from "react";
-
-const PollCard = () => {
-  return(
-    <>
-    <h1>Question:</h1>
-    <div></div>
-    <div></div>
-    <input className="input" placeholder="Input Answer"></input>
-    <div></div>
-    <button onClick={()=>{console.log('submitted')}}>Submit</button>
-    </>
-  )
+interface PollCardProps {
+  topic: string;
+  pollId: string;
 }
+const PollCard: React.FC<PollCardProps> = ({pollId,topic}) => {
+  return (
+    <div style={cardStyle}>
+      {topic}
+    </div>
+  );
+};
+
+const cardStyle: React.CSSProperties = {
+  border: '1px solid #ccc',
+  padding: '10px',
+  margin: '10px',
+  borderRadius: '5px',
+  display: 'inline-block',
+};
 
 export default PollCard;
