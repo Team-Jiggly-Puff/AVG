@@ -14,7 +14,7 @@ const port = process.env.PORT || 3000
 
 app.use(express.json());
 
-app.use(express.static(path.join(__dirname, '../build')));
+app.use(express.static(path.join(__dirname, '../../build')));
 
 app.use('/api/users', userRoutes);
 app.use('/api/polls', pollRoutes);
@@ -22,7 +22,7 @@ app.use('/api/polls', pollRoutes);
 app.get('/', (req: Request, res: Response, next: NextFunction) => {
     try {
         console.log('I AM GETTING HIT');
-        res.send(path.join(__dirname,'..','build','index.html'));
+        res.sendFile(path.join(__dirname,'..', '..','build','index.html'));
     } catch (err) {
         return next({
             log: 'Error sending index.html to client',
