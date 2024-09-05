@@ -21,8 +21,8 @@ app.use('/api/polls', pollRoutes);
 
 app.get('/', (req: Request, res: Response, next: NextFunction) => {
     try {
-        console.log('I AM GETTING HIT');
-        res.send(path.join(__dirname,'..','build','index.html'));
+        console.log('I AM GETTING HIT /');
+        res.sendFile(path.join(__dirname,'..', '..', 'build','index.html'));
     } catch (err) {
         return next({
             log: 'Error sending index.html to client',
@@ -49,7 +49,7 @@ app.post('/api/postPollTest', getUser, createPoll, (req: Request, res: Response,
 
 //_______________________________________________________
 app.get('*',(req: Request, res: Response) => {
-    console.log('I AM GETTING HIT');
+    console.log('I AM GETTING HIT *');
     console.log(path.join(__dirname,'..','..','build','index.html'));
     res.sendFile(path.join(__dirname,'..','..','build','index.html'));
 });
