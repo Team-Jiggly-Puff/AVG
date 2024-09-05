@@ -19,40 +19,23 @@ app.use(express.static(path.join(__dirname, '../../build')));
 app.use('/api/users', userRoutes);
 app.use('/api/polls', pollRoutes);
 
-app.get('/', (req: Request, res: Response, next: NextFunction) => {
-    try {
-        console.log('I AM GETTING HIT');
-        res.sendFile(path.join(__dirname,'..', '..','build','index.html'));
-    } catch (err) {
-        return next({
-            log: 'Error sending index.html to client',
-            message: { err: 'Server error loading page'}
-        });
-    }
-});
+// app.get('/', (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//         console.log('I AM GETTING HIT');
+//         res.send(path.join(__dirname,'..','build','index.html'));
+//     } catch (err) {
+//         return next({
+//             log: 'Error sending index.html to client',
+//             message: { err: 'Server error loading page'}
+//         });
+//     }
+// });
 
-
-// This is just for testing purposes
-
-app.get('/api/pollTest', getSpecificPoll, (req: Request, res: Response, next: NextFunction) => {
-    res.status(200).json(res.locals.poll);
-});
-
-app.get('/api/topicsTest', getAllTopics, (req: Request, res: Response, next: NextFunction) => {
-    res.status(200).json(res.locals.topics);
-});
-
-app.post('/api/postPollTest', getUser, createPoll, (req: Request, res: Response, next: NextFunction) => {
-  res.status(200).json(res.locals.newPoll);
-});
-
-
-//_______________________________________________________
-app.get('*',(req: Request, res: Response) => {
-    console.log('I AM GETTING HIT');
-    console.log(path.join(__dirname,'..','..','build','index.html'));
-    res.sendFile(path.join(__dirname,'..','..','build','index.html'));
-});
+// app.get('*',(req: Request, res: Response) => {
+//     console.log('I AM GETTING HIT');
+//     console.log(path.join(__dirname,'..','..','build','index.html'));
+//     res.sendFile(path.join(__dirname,'..','..','build','index.html'));
+// });
 
 app.use((err: CustomError, req: Request, res: Response, next: NextFunction) => {
     const status = err.status || 500;
