@@ -86,7 +86,7 @@ const getSpecificPoll = async (req: Request, res: Response, next: NextFunction) 
           options: []
         };
       }
-      questionObj.options.push(option.option);
+      questionObj.options.push({option: option.option, _id: option._id});
     });
     res.locals.poll = pollObj;
     console.log('pollObj:', res.locals.poll);
