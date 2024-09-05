@@ -5,9 +5,8 @@ import dotenv from 'dotenv';
 import CustomError from '../common/types/types';
 import userRoutes from './routes/userRoutes';
 import pollRoutes from './routes/pollRoutes';
-const { getSpecificPoll, createPoll, getAllTopics } = require('./controllers/pollController.ts');
-const { getUser } = require('./controllers/userController.ts');
-
+const { getSpecificPoll, createPoll, getAllTopics } = require('./controllers/pollController');
+const { getUser } = require('./controllers/userController');
 
 dotenv.config();
 const app: Express = express();
@@ -15,30 +14,30 @@ const port = process.env.PORT || 3000
 
 app.use(express.json());
 
-app.use(express.static(path.join(__dirname, '../build')));
+app.use(express.static(path.join(__dirname,'..','..','build')));
 
 app.use(cookieParser());
 
 app.use('/api/users', userRoutes);
 app.use('/api/polls', pollRoutes);
 
-// app.get('/', (req: Request, res: Response, next: NextFunction) => {
-//     try {
-//         console.log('I AM GETTING HIT');
-//         res.send(path.join(__dirname,'..','build','index.html'));
-//     } catch (err) {
-//         return next({
-//             log: 'Error sending index.html to client',
-//             message: { err: 'Server error loading page'}
-//         });
-//     }
-// });
+app.get('/', (req: Request, res: Response, next: NextFunction) => {
+    try {
+        console.log('I AM GETTING HIT');
+        res.send(path.join(__dirname,'..','build','index.html'));
+    } catch (err) {
+        return next({
+            log: 'Error sending index.html to client',
+            message: { err: 'Server error loading page'}
+        });
+    }
+});
 
-// app.get('*',(req: Request, res: Response) => {
-//     console.log('I AM GETTING HIT');
-//     console.log(path.join(__dirname,'..','..','build','index.html'));
-//     res.sendFile(path.join(__dirname,'..','..','build','index.html'));
-// });
+app.get('*',(req: Request, res: Response) => {
+    console.log('I AM GETTING HIT');
+    console.log(path.join(__dirname,'..','..','build','index.html'));
+    res.sendFile(path.join(__dirname,'..','..','build','index.html'));
+});
 
 app.use((err: CustomError, req: Request, res: Response, next: NextFunction) => {
     const status = err.status || 500;

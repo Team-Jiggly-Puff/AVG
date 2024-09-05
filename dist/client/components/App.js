@@ -11,6 +11,7 @@ const store_1 = __importDefault(require("../store"));
 const Poll_1 = __importDefault(require("./Poll"));
 require("bootstrap/dist/css/bootstrap.min.css");
 const Layout_1 = __importDefault(require("./Layout"));
+const PollsPage_1 = __importDefault(require("./PollsPage"));
 const App = () => {
     return (react_1.default.createElement(react_1.default.Fragment, null,
         react_1.default.createElement(react_redux_1.Provider, { store: store_1.default },
@@ -18,6 +19,7 @@ const App = () => {
                 react_1.default.createElement(react_router_dom_1.Routes, null,
                     react_1.default.createElement(react_router_dom_1.Route, { path: '/', element: react_1.default.createElement(Layout_1.default, null) },
                         react_1.default.createElement(react_router_dom_1.Route, { path: 'Home', element: react_1.default.createElement(Home_1.default, null) }),
-                        react_1.default.createElement(react_router_dom_1.Route, { path: 'poll', element: react_1.default.createElement(Poll_1.default, null) })))))));
+                        react_1.default.createElement(react_router_dom_1.Route, { path: 'polls', element: react_1.default.createElement(PollsPage_1.default, null) }),
+                        react_1.default.createElement(react_router_dom_1.Route, { path: 'poll/:pollId', element: react_1.default.createElement(Poll_1.default, null) })))))));
 };
 exports.default = App;

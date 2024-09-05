@@ -58,7 +58,7 @@ const getSpecificPoll = async (req: Request, res: Response, next: NextFunction) 
   try{
     
     const poll = await db.query(getPollFull, [id]);
-    // console.log('poll:', poll.rows);
+    console.log('poll:', poll.rows);
     const options = poll.rows; 
 
       // now we need to format the data to be a nested object
