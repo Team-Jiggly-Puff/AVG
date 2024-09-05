@@ -1,9 +1,14 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
+import session from 'express-session';
+import passport from '../config/passport';
 import path from 'path';
 import dotenv from 'dotenv';
 import CustomError from '../common/types/types';
+import authRoutes from './routes/authRoutes';
 import userRoutes from './routes/userRoutes';
 import pollRoutes from './routes/pollRoutes';
+import { SESSION_SECRET } from '../utils/secrets';
+import '../config/passport';
 const { getSpecificPoll, createPoll, getAllTopics } = require('./controllers/pollController.ts');
 const { getUser } = require('./controllers/userController.ts');
 
@@ -16,8 +21,19 @@ app.use(express.json());
 
 app.use(express.static(path.join(__dirname, '../../build')));
 
+app.use(session({
+    secret: SESSION_SECRET, // Use the session secret from your utils
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false } // Set to true if using HTTPS
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use('/api/users', userRoutes);
 app.use('/api/polls', pollRoutes);
+app.use('/auth', authRoutes)
 
 // app.get('/', (req: Request, res: Response, next: NextFunction) => {
 //     try {

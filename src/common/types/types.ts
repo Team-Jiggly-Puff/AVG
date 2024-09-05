@@ -3,6 +3,14 @@ export default interface CustomError extends Error {
     status?: number;
 };
 
+export interface User {
+    id: string;
+    google_id: string;
+    email: string;
+    name: string;
+    profile_photo: string;
+}
+
 export interface Option {
     option: string;
     question: string;
