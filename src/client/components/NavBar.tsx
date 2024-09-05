@@ -29,4 +29,4 @@ const Navigation = () => {
   );
 };
 
-export default Navbar;
+export default Navigation;
