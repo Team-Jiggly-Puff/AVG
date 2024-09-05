@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   useEffect(() => {
     try {
       (async function() {
@@ -29,7 +32,8 @@ const Login = () => {
       },
       body: JSON.stringify({ email, password })
     });
-    if (!response.ok) console.log('no bueno');
+    if (response.ok) navigate('/Home');
+    else alert('Incorrect email or password');
   };
 
   const loadCreateAccountForm = () => {
