@@ -24,6 +24,14 @@ export interface Question {
 
 export interface Poll {
     topic: string;
-    created_by: string;
+    created_by?: string;
     questions: Question[];
+}
+
+export interface Answer {
+    user_id: number;
+    option_id: number;
+    option: string;
+    topic: string;
+    question: string;
 }

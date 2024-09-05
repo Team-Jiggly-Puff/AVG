@@ -25,12 +25,16 @@ module.exports = {
     ],
   },
   devServer: {
+    static: {
+      directory: path.join(__dirname, 'build'),
+    },
     hot: true,
     proxy: [
       {
-        context: ['/'],
+        context: ['/api'],
         target: 'http://localhost:3000',
       },
-    ]
+    ], 
+    historyApiFallback: true,
   },
 };
