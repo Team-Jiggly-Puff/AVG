@@ -1,4 +1,5 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
+import cookieParser from 'cookie-parser';
 import path from 'path';
 import dotenv from 'dotenv';
 import CustomError from '../common/types/types';
@@ -15,12 +16,15 @@ app.use(express.json());
 
 app.use(express.static(path.join(__dirname,'..','..','build')));
 
+app.use(cookieParser());
+
 app.use('/api/users', userRoutes);
 app.use('/api/polls', pollRoutes);
 
 app.get('/', (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.sendFile(path.join(__dirname,'..','..','build','index.html'));
+        console.log('I AM GETTING HIT');
+        res.send(path.join(__dirname,'..','build','index.html'));
     } catch (err) {
         return next({
             log: 'Error sending index.html to client',
@@ -29,34 +33,12 @@ app.get('/', (req: Request, res: Response, next: NextFunction) => {
     }
 });
 
-app.get('/bundle.js',(req:Request,res:Response) => {res.sendFile(path.join(__dirname,'..','..','build','bundle.js'))});
-// This is just for testing purposes
-
-app.get('/api/pollTest/:id', getSpecificPoll, (req: Request, res: Response, next: NextFunction) => {
-    res.status(200).json(res.locals.poll);
+app.get('*',(req: Request, res: Response) => {
+    console.log('I AM GETTING HIT');
+    console.log(path.join(__dirname,'..','..','build','index.html'));
+    res.sendFile(path.join(__dirname,'..','..','build','index.html'));
 });
 
-app.get('/api/topicsTest', getAllTopics, (req: Request, res: Response, next: NextFunction) => {
-    res.status(200).json(res.locals.topics);
-});
-
-app.post('/api/postPollTest', getUser, createPoll, (req: Request, res: Response, next: NextFunction) => {
-  res.status(200).json(res.locals.newPoll);
-});
-
-
-//_______________________________________________________
-app.get('*', (req, res) => {
-    const url = req.url;
-
-    // Check if the request is for a static file (e.g., .js, .css)
-    if (url.endsWith('.js') || url.endsWith('.css') || url.endsWith('.png') || url.endsWith('.jpg')) {
-        res.sendFile(path.join(__dirname, '..', '..', 'build', url));
-    } else {
-        // Otherwise, serve index.html for React Router to handle
-        res.sendFile(path.join(__dirname, '..', '..', 'build', 'index.html'));
-    }
-});
 app.use((err: CustomError, req: Request, res: Response, next: NextFunction) => {
     const status = err.status || 500;
     res.status(status).json({

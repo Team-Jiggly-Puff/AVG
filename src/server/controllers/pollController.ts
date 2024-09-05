@@ -1,7 +1,8 @@
 const db = require('../models/dbClient');
 const { NextFunction } = require('express');
 import { Request, Response, NextFunction } from 'express';
-const { postPoll, postQuestion, postOptions, getPollFull, getTopics } = require('../queries/pollQueries');
+const { postPoll, postQuestion, postOptions, getPollFull, getTopics } = require('../queries/pollQueries.ts');
+const { postResponse } = require('../queries/responseQueries.ts');
 import { Poll, Question, Option } from '../../common/types/types';
 
 
@@ -110,10 +111,36 @@ const getAllTopics = async (req: Request, res: Response, next: NextFunction) => 
       message: { err: 'Server error getting polls'}
     });
   }
-}
+};
+
+const respondToPoll = async (req: Request, res: Response, next: NextFunction) => {
+  const { option_ids } = req.body;
+  const user_id = res.locals.user._id;
+  console.log('user_id:', user_id);
+
+  const client = await db.connect();
+  try{
+    await client.query('BEGIN').then(() => console.log('Transaction started'));
+    for (let option_id of option_ids){
+      console.log('option_id:', option_id);
+      console.log('user_id:', user_id);
+      const response_id = await client.query(postResponse, [user_id, option_id]);
+    }
+    await client.query('COMMIT');
+  } catch(err){
+    return next({
+      log: 'Error responding to poll',
+      message: { err: 'Server error responding to poll'}
+    });
+  } finally {
+    client.release();
+    next();
+  }
+};
 
 module.exports = {
   createPoll,
   getSpecificPoll,
-  getAllTopics
+  getAllTopics,
+  respondToPoll
 }
