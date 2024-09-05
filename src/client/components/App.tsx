@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import store from '../store';
 import Poll from './Poll';
 import Profile from './Profile';
+import Login from './Login';
 import "bootstrap/dist/css/bootstrap.min.css";
 import NavBar from './NavBar';
 import Layout from './Layout';
@@ -21,6 +22,7 @@ const App = () => {
             <Route path='Home' element = {<Home/>}></Route>
             <Route path='poll' element={<Poll/>}></Route>
             <Route path='profile' element={<Profile/>}></Route>
+            <Route path='login' element={<Login/>}></Route>
           </Route>
         </Routes>
       </BrowserRouter>

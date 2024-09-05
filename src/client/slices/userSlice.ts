@@ -3,11 +3,15 @@ import { ProfileData } from 'types/userTypes';
 
 
 const initialState: ProfileData = {
-  firstName: { label: 'First Name', data: 'Tristan' },
-  lastName: { label: 'Last Name', data: 'Frank' },
-  dateOfBirth: { label: 'Date of Birth:', data: '1994-11-19' },
-  city: { label: 'City', data: 'Denver' },
-  state: { label: 'State', data: 'Colorado' }
+  firstName: { label: 'First Name', data: '' },
+  lastName: { label: 'Last Name', data: '' },
+  username: { label: 'Username', data: '' },
+  email: { label: 'Email', data: '' },
+  age: { label: 'Age', data: '' },
+  dateOfBirth: { label: 'Date of Birth', data: '' },
+  city: { label: 'City', data: '' },
+  state: { label: 'State', data: '' },
+  region: { label: 'Region', data: '' }
 };
 
 export const userSlice = createSlice({

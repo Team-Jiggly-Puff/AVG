@@ -1,4 +1,5 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
+import cookieParser from 'cookie-parser';
 import path from 'path';
 import dotenv from 'dotenv';
 import CustomError from '../common/types/types';
@@ -15,6 +16,8 @@ const port = process.env.PORT || 3000
 app.use(express.json());
 
 app.use(express.static(path.join(__dirname, '../build')));
+
+app.use(cookieParser());
 
 app.use('/api/users', userRoutes);
 app.use('/api/polls', pollRoutes);
