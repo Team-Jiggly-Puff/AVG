@@ -1,13 +1,25 @@
 import React from "react";
 import { Navigate,useNavigate, Link } from "react-router-dom";
+import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 const NavBar = () => {
   const navigate = useNavigate();
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <a className="navbar-brand" href="#">
+    <Navbar className="bg-light">
+      <a className="ml-2 text-10" href="#">
         AVG
       </a>
-      <button
+      <Nav className="mr-auto">
+        <Link className="ml-3 nav-link" to="/Home">
+          Home
+        </Link>
+        <Link className="nav-link" to="/poll">
+          Polls
+        </Link>
+        <Link className="nav-link" to="/profile">
+          Profile
+        </Link>
+      </Nav>
+      {/* <button
         className="navbar-toggler"
         type="button"
         data-toggle="collapse"
@@ -19,11 +31,11 @@ const NavBar = () => {
         <span className="navbar-toggler-icon"></span>
       </button>
 
-      <div className="collapse navbar-collapse" id="navbarNavDropdown">
+      <div className="flex collapse navbar-collapse" id="navbarNavDropdown">
         <ul className="navbar-nav">
           <li className="nav-item active">
             <Link className="nav-link" to="/Home">
-              Home <span className="sr-only">(current)</span>
+              Home <span className="sr-only"></span>
             </Link>
           </li>
          <li className="nav-item" onClick={()=>{console.log('hi')}}>
@@ -32,7 +44,7 @@ const NavBar = () => {
             </Link>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="#">
+            <a className=" nav-link" href="#">
               Pricing
             </a>
           </li>
@@ -64,7 +76,10 @@ const NavBar = () => {
           </li>
         </ul>
       </div>
-    </nav>
+      <div className="nav-item">
+        Profile
+      </div> */}
+    </Navbar>
   );
 };
 

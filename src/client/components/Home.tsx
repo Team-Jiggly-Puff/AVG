@@ -2,9 +2,9 @@ import React, { ReactElement } from 'react';
 
 const Home = () => {
   return (
-    <div>
-      This is Home !
-    </div>);
+    <p className='text-red-500'>
+      hello
+    </p>);
 }
 
 export default Home;
