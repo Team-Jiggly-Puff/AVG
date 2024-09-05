@@ -98,7 +98,7 @@ const Login = () => {
       </button>
       <button 
         className='w-full px-4 py-2 bg-blue-600 text-black rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500'
-        onClick={loadCreateAccountForm}
+        onClick={() => { setCreateAccountFormVisible(true); setLoginFormVisible(false); }}
       >
         Create Account
       </button>
@@ -178,6 +178,12 @@ const Login = () => {
         onClick={createAccount}
       >
         Create Account
+      </button>
+      <button 
+        className='w-full px-4 py-2 bg-blue-600 text-black rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500'
+        onClick={() => { setCreateAccountFormVisible(false); setLoginFormVisible(true); }}
+      >
+        Back to Login Form
       </button>
     </div>
   );
