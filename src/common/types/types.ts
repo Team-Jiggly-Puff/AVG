@@ -5,7 +5,7 @@ export default interface CustomError extends Error {
 
 export interface Option {
     option: string;
-    _id?: number;
+    id?: number;
     question?: string;
     question_id?: number;
     data_type?: string;

@@ -19,7 +19,7 @@ RETURNING _id;
 `;
 
 const getPollFull = `
-SELECT  option, _id, question_id, data_type, q.question, q.poll_id, p.topic, p.created_by
+SELECT  option, options._id as id, question_id, data_type, q.question, q.poll_id, p.topic, p.created_by
 FROM options
 JOIN questions q ON q._id = options.question_id
 JOIN polls p ON p._id = q.poll_id
