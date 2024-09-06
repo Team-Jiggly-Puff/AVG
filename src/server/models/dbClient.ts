@@ -17,4 +17,4 @@ module.exports = {
     console.log('client connected');
     return pool.connect();
   }
-}
+};

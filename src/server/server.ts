@@ -1,12 +1,18 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
+import session from 'express-session';
+import passport from '../config/passport';
 import cookieParser from 'cookie-parser';
 import path from 'path';
 import dotenv from 'dotenv';
+import authRoutes from './routes/authRoutes';
 import CustomError from '../common/types/pollTypes';
 import userRoutes from './routes/userRoutes';
 import pollRoutes from './routes/pollRoutes';
-const { getSpecificPoll, createPoll, getAllTopics } = require('./controllers/pollController');
-const { getUser } = require('./controllers/userController');
+import { SESSION_SECRET } from '../utils/secrets';
+import '../config/passport';
+const { getSpecificPoll, createPoll, getAllTopics } = require('./controllers/pollController.ts');
+const { getUser } = require('./controllers/userController.ts');
+
 
 dotenv.config();
 const app: Express = express();
@@ -18,8 +24,19 @@ app.use(express.static(path.join(__dirname,'..','..','build')));
 
 app.use(cookieParser());
 
+app.use(session({
+    secret: SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false } // should be set to true if using HTTPS but rn no
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use('/api/users', userRoutes);
 app.use('/api/polls', pollRoutes);
+app.use('/auth', authRoutes)
 
 // app.get('/', (req: Request, res: Response, next: NextFunction) => {
 //     try {
