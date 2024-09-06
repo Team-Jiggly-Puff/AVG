@@ -2,7 +2,7 @@ import express, { Express, Request, Response, NextFunction } from 'express';
 import cookieParser from 'cookie-parser';
 import path from 'path';
 import dotenv from 'dotenv';
-import CustomError from '../common/types/types';
+import CustomError from '../common/types/pollTypes';
 import userRoutes from './routes/userRoutes';
 import pollRoutes from './routes/pollRoutes';
 const { getSpecificPoll, createPoll, getAllTopics } = require('./controllers/pollController');
