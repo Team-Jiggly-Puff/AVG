@@ -50,29 +50,38 @@ const signInUser = async (req: Request, res: Response, next: NextFunction) => {
 
   try {
     const user = await db.query(getUserByEmail, [email]);
+
     if (!user.rows.length) {
       return next({
         log: 'Error signing in user',
-        message: { err: 'User not found'}
+        message: { err: 'User not found' },
       });
     }
-    const validPassword = await bcrypt.compare(password, user.rows[0].password);
-    if (!validPassword) {
-      return next({
-        log: 'Error signing in user',
-        message: { err: 'Invalid password'}
-      });
+
+    // bypassing password check for OAuth users
+    // might not be needed now that we added pw as an empty string
+    if (password) {
+      const validPassword = await bcrypt.compare(password, user.rows[0].password);
+      if (!validPassword) {
+        return next({
+          log: 'Error signing in user',
+          message: { err: 'Invalid password' },
+        });
+      }
     }
+
     const token = generateToken(user.rows[0]._id);
     res.cookie('loginToken', token, { httpOnly: true });
+    res.locals.user = user.rows[0];
     next();
   } catch (err) {
     return next({
       log: 'Error signing in user',
-      message: { err: 'Server error signing in user'}
+      message: { err: 'Server error signing in user' },
     });
   }
 };
+
 
 const verifyUser = async (req: Request, res: Response, next: NextFunction) => {
   !req.cookies ? next({

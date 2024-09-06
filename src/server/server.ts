@@ -22,10 +22,10 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '../../build')));
 
 app.use(session({
-    secret: SESSION_SECRET, // Use the session secret from your utils
+    secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false } // Set to true if using HTTPS
+    cookie: { secure: false } // should be set to true if using HTTPS but rn no
 }));
 
 app.use(passport.initialize());

@@ -3,12 +3,21 @@ export default interface CustomError extends Error {
     status?: number;
 };
 
-export interface User {
-    id: string;
-    google_id: string;
+export interface SignUpRequestBody {
+    username: string;
     email: string;
-    name: string;
-    profile_photo: string;
+    password: string;
+    age: number | null;
+    region: string | null;
+}
+
+export interface User {
+    _id: number;
+    username: string;
+    email: string;
+    password: string;
+    age: number | null;
+    region: string | null;
 }
 
 export interface Option {

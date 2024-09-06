@@ -11,8 +11,8 @@ router.get(
 );
 
 router.get("/google/redirect", passport.authenticate("google", {
-    failureRedirect: '/login',
-    successRedirect: '/Home'
+    failureRedirect: '/api/users/signin', // not sure if we redirect to regular sign in page?
+    successRedirect: '/'
 }));
 
 export default router;

@@ -1,58 +1,91 @@
 import passport from 'passport';
-import User from '../common/types/types';
 import { Strategy as GoogleStrategy, Profile } from 'passport-google-oauth20';
-import { query } from '../server/models/dbClient'; // PostgreSQL setup
+const { signInUser, createUser } = require('../server/controllers/userController');
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URL } from '../utils/secrets';
+import { SignUpRequestBody, User } from 'types/types';
+const { query } = require('../server/models/dbClient');
+const { getUserByEmail } = require('../server/queries/userQueries');
 
-// Google OAuth Strategy
 passport.use(new GoogleStrategy({
   clientID: GOOGLE_CLIENT_ID,
   clientSecret: GOOGLE_CLIENT_SECRET,
   callbackURL: GOOGLE_CALLBACK_URL,
 },
-  async (accessToken: string, refreshToken: string, profile: Profile, done: (error: any, user?: User | false) => void) => {
+  async (accessToken: string, refreshToken: string, profile: Profile, done: (error: any, user?: any) => void) => {
     try {
-      // Check if user exists in the database
-      const result = await query('SELECT * FROM users WHERE google_id = $1', [profile.id]);
-
-      if (result.rows.length === 0) {
-        // Insert new user if not found
-        const email = profile.emails?.[0]?.value ?? ''; // Default to an empty string if email is undefined
-        const name = profile.displayName ?? 'Unknown'; // Default to 'Unknown' if displayName is undefined
-        const profilePhoto = profile.photos?.[0]?.value ?? ''; // Default to an empty string if photo is undefined
-        
-        const newUser = await query(
-          `INSERT INTO users (google_id, email, name, profile_photo)
-           VALUES ($1, $2, $3, $4) RETURNING *`,
-          [profile.id, email, name, profilePhoto]
-        );
-        
-        return done(null, newUser.rows[0]);
+      if (!profile.emails?.[0]?.value) {
+        throw new Error('Email is missing from the user profile');
       }
 
-      return done(null, result.rows[0]);
+      const email = profile.emails[0].value;
+
+      const userResult = await query(getUserByEmail, [email]);
+
+      // mock req & res objects
+      const req = { body: {} as SignUpRequestBody };
+      const res = {
+        locals: {
+            user: {} as User,
+            newUser: {} as User,
+        },
+        cookie: () => {},
+      };
+
+      const next = (err?: any) => {
+        if (err) return done(err);
+        if (res.locals.user) {
+          // if user found, pass existing user
+          return done(null, res.locals.user);
+        } else if (res.locals.newUser) {
+          // if new user created, pass new user
+          return done(null, res.locals.newUser);
+        }
+        return done(new Error('User creation failed'));
+      };
+
+      if (userResult.rows.length > 0) {
+        req.body = { email } as SignUpRequestBody;
+        await signInUser(req as any, res as any, next);
+      } else {
+        req.body = {
+          email,
+          username: profile.displayName || 'Unknown',
+          password: '',
+          age: null,
+          region: null,
+        } as SignUpRequestBody;
+        
+        await createUser(req as any, res as any, () => {});
+        return done(null, res.locals.newUser);
+      }
     } catch (error) {
       return done(error);
     }
   }
 ));
 
-passport.serializeUser((user: User, done: (err: any, id?: string) => void) => {
-  done(null, user.id);
-});
 
-passport.deserializeUser(async (id, done) => {
-  try {
-    const result = await query('SELECT * FROM users WHERE id = $1', [id]);
-    if (result.rows.length === 0) {
-      return done(null, null);
+
+// serializing user - not sure if this works
+// for some reason I can't use the User type so I'm not sure
+// might need to look into Express.User / express sessions
+passport.serializeUser((user, done: (err: any, id?: any) => void) => {
+    done(null, user);
+  });
+  
+  // deserialize user from session
+  passport.deserializeUser(async (email: string, done) => {
+    console.log('Deserializing user with email:', email);
+    try {
+      const result = await query(getUserByEmail, [email]);
+      if (result.rows.length === 0) {
+        return done(null, false);
+      }
+      done(null, result.rows[0]);
+    } catch (error) {
+      done(error, null);
     }
-    return done(null, result.rows[0]);
-  } catch (error) {
-    done(error, null);
-  }
-});
+  });
 
 export default passport;
-
   
