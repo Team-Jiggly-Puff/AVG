@@ -2,11 +2,13 @@ import React from "react";
 interface PollCardProps {
   topic: string;
   pollId: string;
+  color:string;
 }
-const PollCard: React.FC<PollCardProps> = ({pollId,topic}) => {
+const PollCard: React.FC<PollCardProps> = ({pollId,topic,color}) => {
+  console.log(color);
   return (
     <div style={cardStyle}>
-      {topic}
+      <div style={{color:color}}>{topic}</div>
     </div>
   );
 };

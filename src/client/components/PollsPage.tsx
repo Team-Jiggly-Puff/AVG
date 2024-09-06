@@ -8,16 +8,36 @@ interface Topic{
   _id:string;
 }
 
+interface Response{
+  topic:string;
+  questions:{}[]
+}
+
 const PollsPage = () => {
   const [topics,changeTopics] = useState<Topic[]>([]);
-
+  const [responses,changeResponses] = useState<Response[]>([]);
+  const [commonTopics,changeCommonTopics] = useState<string[]>([]);
   useEffect(() => {
-    console.log('fetching topics');
-    const fetchTopics = async () => {
-      const data = await fetch('/api/polls/topics').then(response => response.json());
-      changeTopics(data);
+    const fetchData = async () => {
+      try {
+        const [topicsResponse, responsesResponse] = await Promise.all([
+          fetch('/api/polls/topics').then(response => response.json() as Promise<Topic[]>),
+          fetch('/api/users/responses').then(response => response.json() as Promise<Response[]>)
+        ]);
+
+        changeTopics(topicsResponse);
+
+        changeResponses(responsesResponse);
+
+        const common = topicsResponse.map(topicItem => topicItem.topic).filter(topic => responsesResponse.some(responseItem => responseItem.topic === topic));
+
+        changeCommonTopics(common);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     };
-    fetchTopics();
+
+    fetchData();
   }, []);
 
   const gridStyle: React.CSSProperties = {
@@ -25,12 +45,14 @@ const PollsPage = () => {
     gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', // Responsive columns
     gap: '10px', // Space between grid items
   };
-
   return(
     <div style={gridStyle}>
     {topics.map((topic)=>{
+      const isCommon = commonTopics.includes(topic.topic);
+      console.log(commonTopics,'common');
+      console.log(topic.topic,'topic');
       {console.log('pollcard generated')}
-      return <Link key={topic._id} style={{color:'black'}}to={`/poll/${topic._id}`}><PollCard key={topic._id} pollId={topic._id} topic={topic.topic}/></Link>
+      return <Link key={topic._id} to={`/poll/${topic._id}`}><PollCard key={topic._id} pollId={topic._id} topic={topic.topic} color={isCommon ? 'grey':'black'}/></Link>
     })}
     </div>
   )
