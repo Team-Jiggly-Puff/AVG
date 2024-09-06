@@ -6,6 +6,10 @@ interface pollInfo{
   created_by:number,
   questions:Array<Object>
 }
+interface option {
+  option:string;
+  id:number;
+}
 const Poll = () => {
   const {pollId} = useParams();
   const [pollInfo,changePollInfo] = useState<pollInfo>({
@@ -13,15 +17,18 @@ const Poll = () => {
     created_by:0,
     questions:[{}]
   });
+  
   useEffect(()=>{
+    console.log('pollId:', pollId);
     const getPollInfo = async () => {
-      const pollInfo = await fetch(`/api/pollTest/${pollId}`).then(data=>data.json());
+      const pollInfo = await fetch(`/api/polls/${pollId}`).then(data=>data.json());
       changePollInfo(pollInfo);
     }
 
     getPollInfo();
   },[])
-  console.log(pollInfo);
+
+  console.log('pollInfo', pollInfo);
   const pollQuestions = pollInfo.questions;
   const displayOptions = (options:string[]) => {
     if(options){
@@ -35,11 +42,11 @@ const Poll = () => {
     <>
     <h1>Topic:{pollInfo.topic}</h1>
     {pollQuestions.map((q:any, index) => {
-      const displayOptions = (options:string[]) => {
+      const displayOptions = (options:option[]) => {
         if(q.options){
-          return(q.options.map((string:string,index:number)=>{
-            console.log(string);
-            return(<div key={index}>{string}</div>);
+          return(q.options.map((option:option,index:number)=>{
+            console.log('option: ',option.option);
+            return(<div key={index}>{option.option}</div>);
           }))
         }
       }

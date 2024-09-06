@@ -8,7 +8,7 @@ import Poll from './Poll';
 import Profile from './Profile';
 import Login from './Login';
 import "bootstrap/dist/css/bootstrap.min.css";
-import NavBar from './NavBar';
+
 import Layout from './Layout';
 import PollsPage from './PollsPage';
 import PollCard from './PollCard';
