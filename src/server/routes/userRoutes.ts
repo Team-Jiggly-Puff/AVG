@@ -21,7 +21,7 @@ router.get('/verify', verifyUser, (req: Request, res: Response, next: NextFuncti
   res.status(200).json(res.locals.user);
 });
 
-router.get('/responses', getUser, getUserResponses, (req: Request, res: Response, next: NextFunction) => {
+router.get('/responses', verifyUser, getUserResponses, (req: Request, res: Response, next: NextFunction) => {
   res.status(200).json(res.locals.pollResponses);
 });
 

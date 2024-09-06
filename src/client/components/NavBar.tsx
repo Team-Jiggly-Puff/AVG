@@ -4,25 +4,22 @@ import { Link } from 'react-router-dom';
 
 const Navigation = () => {
   return (
-    <Navbar bg="light" expand="lg">
-      <Navbar.Brand as={Link} to="/">
+    <Navbar className='pl-5 bg-gray-400' expand="lg">
+      <Navbar.Brand className='text-black font-bold' as={Link} to="/">
         AVG
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
-          <Nav.Link as={Link} to="/home">
+          <Nav.Link className='transition-all duration-300 hover:-translate-y-1 hover:bg-gray-800 rounded-md ml-3 text-white bg-gray-500' as={Link} to="/home">
             Home
           </Nav.Link>
-          <Nav.Link as={Link} to="/polls">
+          <Nav.Link className='transition-all duration-300 hover:-translate-y-1 hover:bg-gray-800 rounded-md ml-3 text-white bg-gray-500' as={Link} to="/polls">
             Polls
           </Nav.Link>
-          <Nav.Link href="#">Pricing</Nav.Link>
-          <NavDropdown title="Dropdown link" id="basic-nav-dropdown">
-            <NavDropdown.Item href="#">Action</NavDropdown.Item>
-            <NavDropdown.Item href="#">Another action</NavDropdown.Item>
-            <NavDropdown.Item href="#">Something else here</NavDropdown.Item>
-          </NavDropdown>
+          <Nav.Link className='transition-all duration-300 hover:-translate-y-1 hover:bg-gray-800 rounded-md ml-3 text-white bg-gray-500' as={Link} to="/profile">
+            Profile
+          </Nav.Link>
         </Nav>
       </Navbar.Collapse>
     </Navbar>

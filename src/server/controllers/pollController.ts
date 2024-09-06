@@ -78,6 +78,7 @@ const getSpecificPoll = async (req: Request, res: Response, next: NextFunction) 
     //iterating through all options, pushing them to the questionObj,
     //and pushing questionObj to the pollObj when the question changes
     options.forEach((option:Option, index:number) => {
+      console.log('option:', option);
       if (option.question !== questionObj.question || index === options.length - 1){
         pollObj.questions.push(questionObj);
         questionObj = {
@@ -86,7 +87,7 @@ const getSpecificPoll = async (req: Request, res: Response, next: NextFunction) 
           options: []
         };
       }
-      questionObj.options.push(option.option);
+      questionObj.options.push({option: option.option, id: option.id});
     });
     res.locals.poll = pollObj;
     console.log('pollObj:', res.locals.poll);

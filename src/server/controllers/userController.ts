@@ -6,6 +6,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 import { Answer } from '../../common/types/types';
 
+//helper function
 const generateToken = (userID: number) => {
   return jwt.sign({ userID }, process.env.JWT_SECRET, { expiresIn: '3h' });
 };
