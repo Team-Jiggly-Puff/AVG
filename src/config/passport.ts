@@ -2,7 +2,7 @@ import passport from 'passport';
 import { Strategy as GoogleStrategy, Profile } from 'passport-google-oauth20';
 const { signInUser, createUser } = require('../server/controllers/userController');
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URL } from '../utils/secrets';
-import { SignUpRequestBody, User } from 'types/types';
+import { SignUpRequestBody, User } from '../common/types/userTypes';
 const { query } = require('../server/models/dbClient');
 const { getUserByEmail } = require('../server/queries/userQueries');
 
