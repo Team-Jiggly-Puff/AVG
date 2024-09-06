@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 
-const { createUser, getUser, getUserResponses, signInUser, verifyUser } = require('../controllers/userController.ts');
+const { createUser, getUser, getUserResponses, signInUser, verifyUser, signOutUser } = require('../controllers/userController.ts');
 
 const router = express.Router();
 
@@ -13,15 +13,15 @@ router.post('/signup', createUser, signInUser, (req: Request, res: Response, nex
 });
 
 // potentially a sign out route?
-router.post('/signout', (req: Request, res: Response, next: NextFunction) => {
-    
+router.get('/signout', signOutUser, (req: Request, res: Response, next: NextFunction) => {
+    res.status(200).json('User signed out');
 });
 
 router.get('/verify', verifyUser, (req: Request, res: Response, next: NextFunction) => {
   res.status(200).json(res.locals.user);
 });
 
-router.get('/responses', getUser, getUserResponses, (req: Request, res: Response, next: NextFunction) => {
+router.get('/responses', verifyUser, getUserResponses, (req: Request, res: Response, next: NextFunction) => {
   res.status(200).json(res.locals.pollResponses);
 });
 

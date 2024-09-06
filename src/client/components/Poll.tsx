@@ -1,6 +1,7 @@
 import { application } from "express";
 import React, { useEffect , useState } from "react";
 import { useParams } from "react-router-dom";
+
 interface pollInfo{
   topic:string,
   created_by:number,
@@ -21,7 +22,7 @@ const Poll = () => {
   useEffect(()=>{
     console.log('pollId:', pollId);
     const getPollInfo = async () => {
-      const pollInfo = await fetch(`/api/polls/${pollId}`).then(data=>data.json());
+      const pollInfo = await fetch(`/api/polls/poll/${pollId}`).then(data=>data.json());
       changePollInfo(pollInfo);
     }
 

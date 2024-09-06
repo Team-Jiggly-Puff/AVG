@@ -9,7 +9,7 @@ import { Poll, Question, Option } from '../../common/types/types';
 const createPoll = async (req: Request, res: Response, next: NextFunction) => {
   const user = res.locals.user;
   console.log('user:', user);
-  const { newPollObj } = req.body;
+  const { newPollObj, user_id } = req.body;
   const { topic, questions } = newPollObj;
 
   // a single client needs to be used over a pool for transactional queries
@@ -19,7 +19,7 @@ const createPoll = async (req: Request, res: Response, next: NextFunction) => {
     
     await client.query('BEGIN').then(() => console.log('Transaction started'));
     
-    const newPoll = await client.query(postPoll, [topic, user._id]);
+    const newPoll = await client.query(postPoll, [topic, user_id]);
     const newPoll_id = newPoll.rows[0]._id;
     console.log('newPoll_id:', newPoll_id);
 
