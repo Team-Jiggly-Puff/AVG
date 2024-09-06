@@ -15,7 +15,7 @@ const Poll = () => {
   });
   useEffect(()=>{
     const getPollInfo = async () => {
-      const pollInfo = await fetch(`/api/pollTest/${pollId}`).then(data=>data.json());
+      const pollInfo = await fetch(`/api/polls/${pollId}`).then(data=>data.json());
       changePollInfo(pollInfo);
     }
 

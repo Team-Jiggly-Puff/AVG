@@ -11,7 +11,8 @@ const PollsPage = () => {
   const [topics,changeTopics] = useState<Topic[]>([]);
   useEffect(() => {
     const fetchTopics = async () => {
-      const data = await fetch('/api/topicsTest').then(response => response.json());
+      const data = await fetch('/api/polls/topics').then(response => response.json());
+      console.log(data,'data');
       changeTopics(data);
     };
 
