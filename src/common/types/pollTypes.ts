@@ -5,17 +5,18 @@ export default interface CustomError extends Error {
 
 export interface Option {
     option: string;
-    question: string;
+    id?: number;
+    question?: string;
     question_id?: number;
     data_type?: string;
     poll_id?: number;
     created_by?: string;
-    options_type: string;
+    options_type?: string;
 }
 
 export interface Question {
-    question: string;
-    options_type: string;
+    question?: string;
+    options_type?: string;
     options: (Option | string)[];
     poll_id?: number;
     topic?: string;

@@ -11,10 +11,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const { postUser, getUserByID } = require('../queries/userQueries');
 const db = require('../models/dbClient');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const generateToken = (userID) => {
+    return jwt.sign({ userID }, process.env.JWT_SECRET, { expiresIn: '3h' });
+};
 const createUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { username, email, password, age, region } = req.body;
     try {
-        const newUser = yield db.query(postUser, [username, email, password, age, region]);
+        const hashedPassword = yield bcrypt.hash(password, 10);
+        const newUser = yield db.query(postUser, [username, email, hashedPassword, age, region]);
         res.locals.newUser = newUser.rows[0];
         next();
     }
@@ -26,10 +32,13 @@ const createUser = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 const getUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
+    console.log('req.body in getUser:', req.body);
+    const { user_id } = req.body;
     try {
-        const user = yield db.query(getUser, [id]);
+        const user = yield db.query(getUserByID, [user_id]);
         res.locals.user = user.rows[0];
+        console.log('user:', user.rows[0]);
+        console.log('res.locals.user:', res.locals.user);
         next();
     }
     catch (err) {
