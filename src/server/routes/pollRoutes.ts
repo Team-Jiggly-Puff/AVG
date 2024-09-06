@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 const { createPoll, getSpecificPoll, getAllTopics, respondToPoll } = require('../controllers/pollController.ts');
-const { getUser, verifyUser } = require('../controllers/userController.ts');
+const { getUser,verifyUser } = require('../controllers/userController.ts');
 const router = express.Router();
 
 router.get('/topics', getAllTopics, (req: Request, res: Response, next: NextFunction) => {

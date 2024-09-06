@@ -3,7 +3,7 @@ const { NextFunction } = require('express');
 import { Request, Response, NextFunction } from 'express';
 const { postPoll, postQuestion, postOptions, getPollFull, getTopics } = require('../queries/pollQueries.ts');
 const { postResponse } = require('../queries/responseQueries.ts');
-import { Poll, Question, Option } from '../../common/types/types';
+import { Poll, Question, Option } from '../../common/types/pollTypes';
 
 
 const createPoll = async (req: Request, res: Response, next: NextFunction) => {

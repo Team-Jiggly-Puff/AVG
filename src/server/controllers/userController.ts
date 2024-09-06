@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-const { postUser, getUserByID, getUserByEmail } = require('../queries/userQueries.ts');
+const { postUser, getUserByID, getUserByEmail, updateUserByID } = require('../queries/userQueries.ts');
 const { getResponsesByUser } = require('../queries/responseQueries.ts');
 const db = require('../models/dbClient.ts');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-import { Answer } from '../../common/types/types';
+import { Answer } from '../../common/types/pollTypes';
 
 //helper function
 const generateToken = (userID: number) => {
@@ -55,29 +55,38 @@ const signInUser = async (req: Request, res: Response, next: NextFunction) => {
 
   try {
     const user = await db.query(getUserByEmail, [email]);
+
     if (!user.rows.length) {
       return next({
         log: 'Error signing in user',
-        message: { err: 'User not found'}
+        message: { err: 'User not found' },
       });
     }
-    const validPassword = await bcrypt.compare(password, user.rows[0].password);
-    if (!validPassword) {
-      return next({
-        log: 'Error signing in user',
-        message: { err: 'Invalid password'}
-      });
+
+    // bypassing password check for OAuth users
+    // might not be needed now that we added pw as an empty string
+    if (password) {
+      const validPassword = await bcrypt.compare(password, user.rows[0].password);
+      if (!validPassword) {
+        return next({
+          log: 'Error signing in user',
+          message: { err: 'Invalid password' },
+        });
+      }
     }
+
     const token = generateToken(user.rows[0]._id);
     res.cookie('loginToken', token, { httpOnly: true });
+    res.locals.user = user.rows[0];
     next();
   } catch (err) {
     return next({
       log: 'Error signing in user',
-      message: { err: 'Server error signing in user'}
+      message: { err: 'Server error signing in user' },
     });
   }
 };
+
 
 const verifyUser = async (req: Request, res: Response, next: NextFunction) => {
   !req.cookies ? next({
@@ -107,6 +116,25 @@ const verifyUser = async (req: Request, res: Response, next: NextFunction) => {
     });
   }
 };
+
+const updateUser = async (req: Request, res: Response, next: NextFunction) => {
+  console.log('we updatin')
+  const { id } = req.params;
+  const { username, email, password, age, region } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const parameters = [id, username, email, hashedPassword, Number(age), region];
+  console.log('parameters', parameters)
+  try {
+    await db.query(updateUserByID, parameters);
+    return next();
+  } catch (err) {
+    console.log(err);
+    return next({
+      log: 'Error updating user',
+      message: { err: 'User not found' }
+    });
+  }
+}
 
       //gets all responses a user has submitted
 const getUserResponses = async (req: Request, res: Response, next: NextFunction) => {
@@ -172,4 +200,5 @@ module.exports = {
   signInUser,
   verifyUser,
   signOutUser,
+  updateUser
 };

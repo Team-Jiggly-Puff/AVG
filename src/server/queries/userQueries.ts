@@ -1,5 +1,3 @@
-
-
 const getUserByID = `
 SELECT * FROM users 
 WHERE _id = $1;
@@ -16,9 +14,16 @@ SELECT * FROM users
 WHERE email = $1;
 `;
 
+const updateUserByID = `
+UPDATE users
+SET username = $2, email = $3, password = $4, age = $5, region = $6
+WHERE _id = $1;
+`
+
 
 module.exports = {
     getUserByID,
     postUser,
     getUserByEmail,
+    updateUserByID
 }
