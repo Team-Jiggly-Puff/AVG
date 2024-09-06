@@ -8,7 +8,7 @@ router.post('/signin', signInUser, (req: Request, res: Response, next: NextFunct
   res.status(200).json(res.locals.user);
 });
 
-router.post('/signup', createUser, (req: Request, res: Response, next: NextFunction) => {
+router.post('/signup', createUser, signInUser, (req: Request, res: Response, next: NextFunction) => {
   res.status(200).json(res.locals.newUser);
 });
 
@@ -18,7 +18,7 @@ router.post('/signout', (req: Request, res: Response, next: NextFunction) => {
 });
 
 router.get('/verify', verifyUser, (req: Request, res: Response, next: NextFunction) => {
-  res.status(200).json('User verified');
+  res.status(200).json(res.locals.user);
 });
 
 router.get('/responses', getUser, getUserResponses, (req: Request, res: Response, next: NextFunction) => {
