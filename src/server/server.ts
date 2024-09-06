@@ -1,12 +1,12 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
+import cookieParser from 'cookie-parser';
 import path from 'path';
 import dotenv from 'dotenv';
 import CustomError from '../common/types/types';
 import userRoutes from './routes/userRoutes';
 import pollRoutes from './routes/pollRoutes';
-const { getSpecificPoll, createPoll, getAllTopics } = require('./controllers/pollController.ts');
-const { getUser } = require('./controllers/userController.ts');
-
+const { getSpecificPoll, createPoll, getAllTopics } = require('./controllers/pollController');
+const { getUser } = require('./controllers/userController');
 
 dotenv.config();
 const app: Express = express();
@@ -14,7 +14,9 @@ const port = process.env.PORT || 3000
 
 app.use(express.json());
 
-app.use(express.static(path.join(__dirname, '../../build')));
+app.use(express.static(path.join(__dirname,'..','..','build')));
+
+app.use(cookieParser());
 
 app.use('/api/users', userRoutes);
 app.use('/api/polls', pollRoutes);

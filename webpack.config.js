@@ -1,5 +1,4 @@
 const path = require('path');
-
 module.exports = {
   mode: 'development',
   entry: './src/client/index.tsx', // Ensure correct entry point
@@ -20,7 +19,7 @@ module.exports = {
       },
       {
         test: /\.css$/i,
-        use: ['style-loader', 'css-loader'], // Handle CSS if needed
+        use: ['style-loader', 'css-loader','postcss-loader'], // Handle CSS if needed
       },
     ],
   },
@@ -37,4 +36,8 @@ module.exports = {
     ], 
     historyApiFallback: true,
   },
+  plugins: [
+    require('tailwindcss'),
+    require('autoprefixer'),
+  ],
 };

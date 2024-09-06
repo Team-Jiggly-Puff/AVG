@@ -18,7 +18,7 @@ const NavBar = () => {
                         "Home ",
                         react_1.default.createElement("span", { className: "sr-only" }, "(current)"))),
                 react_1.default.createElement("li", { className: "nav-item", onClick: () => { console.log('hi'); } },
-                    react_1.default.createElement(react_router_dom_1.Link, { className: "nav-link", to: "/poll" }, "Polls")),
+                    react_1.default.createElement(react_router_dom_1.Link, { className: "nav-link", to: "/polls" }, "Polls")),
                 react_1.default.createElement("li", { className: "nav-item" },
                     react_1.default.createElement("a", { className: "nav-link", href: "#" }, "Pricing")),
                 react_1.default.createElement("li", { className: "nav-item dropdown" },
