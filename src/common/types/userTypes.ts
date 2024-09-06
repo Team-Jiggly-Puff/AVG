@@ -1,16 +1,12 @@
 export interface ProfileOption {
   label: string
-  data: string
+  data: string | number
 }
 
 export interface ProfileData {
-  firstName: ProfileOption
-  lastName: ProfileOption
   username: ProfileOption
   email: ProfileOption
+  password: ProfileOption
   age: ProfileOption
-  dateOfBirth: ProfileOption
-  city: ProfileOption
-  state: ProfileOption
   region: ProfileOption
 }
