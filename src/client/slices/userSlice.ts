@@ -3,14 +3,10 @@ import { ProfileData } from 'types/userTypes';
 
 
 const initialState: ProfileData = {
-  firstName: { label: 'First Name', data: '' },
-  lastName: { label: 'Last Name', data: '' },
   username: { label: 'Username', data: '' },
   email: { label: 'Email', data: '' },
+  password: { label: 'Password', data: '' },
   age: { label: 'Age', data: '' },
-  dateOfBirth: { label: 'Date of Birth', data: '' },
-  city: { label: 'City', data: '' },
-  state: { label: 'State', data: '' },
   region: { label: 'Region', data: '' }
 };
 

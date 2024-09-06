@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 
-const { createUser, getUser, getUserResponses, signInUser, verifyUser } = require('../controllers/userController.ts');
+const { createUser, getUser, getUserResponses, signInUser, verifyUser, updateUser } = require('../controllers/userController.ts');
 
 const router = express.Router();
 
@@ -21,7 +21,11 @@ router.get('/verify', verifyUser, (req: Request, res: Response, next: NextFuncti
   res.status(200).json(res.locals.user);
 });
 
-router.get('/responses', verifyUser, getUserResponses, (req: Request, res: Response, next: NextFunction) => {
+router.post('/update/:id', updateUser, (req: Request, res: Response, next: NextFunction) => {
+  res.sendStatus(200);
+})
+
+router.get('/responses', getUser, getUserResponses, (req: Request, res: Response, next: NextFunction) => {
   res.status(200).json(res.locals.pollResponses);
 });
 

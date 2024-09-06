@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-const { postUser, getUserByID, getUserByEmail } = require('../queries/userQueries.ts');
+const { postUser, getUserByID, getUserByEmail, updateUserByID } = require('../queries/userQueries.ts');
 const { getResponsesByUser } = require('../queries/responseQueries.ts');
 const db = require('../models/dbClient.ts');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-import { Answer } from '../../common/types/types';
+import { Answer } from '../../common/types/pollTypes';
 
 //helper function
 const generateToken = (userID: number) => {
@@ -104,6 +104,25 @@ const verifyUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const updateUser = async (req: Request, res: Response, next: NextFunction) => {
+  console.log('we updatin')
+  const { id } = req.params;
+  const { username, email, password, age, region } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const parameters = [id, username, email, hashedPassword, Number(age), region];
+  console.log('parameters', parameters)
+  try {
+    await db.query(updateUserByID, parameters);
+    return next();
+  } catch (err) {
+    console.log(err);
+    return next({
+      log: 'Error updating user',
+      message: { err: 'User not found' }
+    });
+  }
+}
+
       //gets all responses a user has submitted
 const getUserResponses = async (req: Request, res: Response, next: NextFunction) => {
   const user_id = res.locals.user._id;
@@ -162,4 +181,5 @@ module.exports = {
   getUserResponses,
   signInUser,
   verifyUser,
+  updateUser
 };

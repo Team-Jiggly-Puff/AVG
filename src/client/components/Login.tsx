@@ -54,10 +54,7 @@ const Login = () => {
       },
       body: JSON.stringify({ email, password, username, age, region })
     });
-    if (!response.ok) console.log('no bueno');
-    else {
-      
-    }
+    if (response.ok) navigate('/Home');
   }
   const googleLogin = () => { };
 
