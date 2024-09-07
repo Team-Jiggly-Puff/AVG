@@ -8,10 +8,6 @@ interface pollInfo{
   questions:Array<Object>
 }
 
-interface statsInfo{
-  options:Array<Object>
-}
-
 interface Option {
   option: string;
   id: number;
@@ -28,6 +24,8 @@ const Poll = () => {
     questions:[{}]
   });
 
+  const [statsInfo,changeStatsInfo] = useState<Object[]>([]);
+
   useEffect(()=>{
     console.log('pollId:', pollId);
     const getPollInfo = async () => {
@@ -37,11 +35,12 @@ const Poll = () => {
     const getStatsInfo = async () => {
       const statsInfo = await fetch(`/api/polls/stats/${pollId}`).then(data=>data.json());
       console.log('statsInfo:', statsInfo);
+      changeStatsInfo(statsInfo);
       
     };
     
     getPollInfo();
-    // getStatsInfo();
+    getStatsInfo();
 
   },[])
 
@@ -92,8 +91,26 @@ const Poll = () => {
           <div className="text-2xl font-bold mb-6">
             Topic: {pollInfo.topic}
           </div>
-          
-          <div className="w-full max-w-lg">
+          <div className="flex flex-row w-full">
+            <div className="w-1/3">
+              stats
+              <div className="ml-5 mr-5">
+                {statsInfo.map((stat: any, index: number) => (
+                  <div key={index} className="mb-4">
+                    <div>{stat.question}</div>
+                    <div>
+                      {stat.optionTotals.map((option: any, optionIndex: number) => (
+                        <div key={optionIndex} className="flex justify-between">
+                          <div>{option.option}</div>
+                          <div>{option.percentage}%</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>))}
+              </div>
+            </div>
+            <div className="flex w-full flex-column center-items ml-10">
+              <div className="w-full max-w-300">
             {pollQuestions.map((q: any, index: number) => {
               const displayOptions = (options: Option) => {
                 if (q.options) {
@@ -127,6 +144,11 @@ const Poll = () => {
           >
             Submit
           </button>
+            </div>
+            
+
+          </div>
+          
         </>
       )}
     </div>

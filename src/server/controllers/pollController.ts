@@ -195,7 +195,10 @@ const getStats = async (req: Request, res: Response, next: NextFunction) => {
     return next({
       log: 'Error getting stats',
       message: { err: 'Server error getting stats'}
-    });
+    })
+  }
+  finally{
+    client.release();
   }
 }; 
 
