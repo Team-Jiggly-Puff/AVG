@@ -97,8 +97,8 @@ const Profile = () => {
     : null;
 
   const loginRedirectTemplate = (
-    <div>
-      No user currently logged in
+    <div className="text-3xl">
+      You are not currently logged in
     </div>
   );
 
@@ -119,9 +119,9 @@ const Profile = () => {
   );
 
   return (
-    <div>
+    <div className="min-h-screen bg-gradient-to-b from-gray-400 to-gray-800 p-4">
       <form
-        className='max-w-3xl mx-auto p-6 bg-white rounded-lg space-y-6'
+        className='max-w-3xl mx-auto p-6 rounded-lg space-y-6 text-center'
         id="userDetailsForm"
       >
         {userData ? userOptions : loginRedirectTemplate}

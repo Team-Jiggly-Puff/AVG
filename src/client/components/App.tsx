@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route,Routes } from 'react-router-dom';
+import { BrowserRouter, Route,Routes,Navigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../hooks';
 import Home from './Home';
 import { Provider } from 'react-redux';
@@ -14,13 +14,13 @@ import PollsPage from './PollsPage';
 import PollCard from './PollCard';
 import '../../../build/styles.css'
 import { ProfileData } from 'types/userTypes';
-
 const App = () => {
   const userData: ProfileData = useAppSelector(state => state.user);
   console.log(userData);
   return (
       <BrowserRouter>
         <Routes>
+        <Route path='/' element={<Navigate to='/home' />} />
           <Route path='/' element={<Layout/>}>
             <Route path='Home' element = {<Home/>}></Route>
             <Route path='polls' element={<PollsPage/>}></Route>
