@@ -3,6 +3,7 @@ import { useEffect,useState } from "react";
 import { Link } from "react-router-dom";
 import PollCard from "./PollCard";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 interface Topic{
   topic:string;
@@ -12,6 +13,11 @@ interface Topic{
 interface Response{
   topic:string;
   questions:{}[]
+  error?:{
+    log:string,
+    message:string,
+    status:string
+  } | any
 }
 
 const PollsPage = () => {
@@ -21,23 +27,24 @@ const PollsPage = () => {
     
   const [responses,changeResponses] = useState<Response[]>([]);
   const [commonTopics,changeCommonTopics] = useState<string[]>([]);
+  const location = useLocation();
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [topicsResponse, responsesResponse] = await Promise.all([
           fetch('/api/polls/topics').then(response => response.json() as Promise<Topic[]>),
-          fetch('/api/users/responses').then(response => response.json() as Promise<Response[]>)
+          fetch('/api/users/responses').then(response => response.json() as Promise<Response[]>),
         ]);
         console.log('topicsResponse:', topicsResponse);
         console.log('responsesResponse:', responsesResponse);
+        const data = await fetch('/api/users/verify').then(data=>console.log(data));
+        if(!Object.keys(topicsResponse).includes('eror')) changeTopics(topicsResponse);
 
-        changeTopics(topicsResponse);
-
-        changeResponses(responsesResponse);
-
-        const common = topicsResponse.map(topicItem => topicItem.topic).filter(topic => responsesResponse.some(responseItem => responseItem.topic === topic));
-
-        changeCommonTopics(common);
+        if(!Object.keys(responsesResponse).includes('error') && !Object.keys(topicsResponse).includes('eror')){
+          changeResponses(responsesResponse);
+          const common = topicsResponse.map(topicItem => topicItem.topic).filter(topic => responsesResponse.some(responseItem => responseItem.topic === topic));
+          changeCommonTopics(common);
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
