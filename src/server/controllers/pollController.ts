@@ -129,6 +129,7 @@ const respondToPoll = async (req: Request, res: Response, next: NextFunction) =>
   const client = await db.connect();
   try{
     await client.query('BEGIN').then(() => console.log('Transaction started'));
+    await client.query(getResponsesByUser, [user_id]);
     for (let option_id of option_ids){
       console.log('option_id:', option_id);
       console.log('user_id:', user_id);
