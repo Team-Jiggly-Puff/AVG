@@ -88,7 +88,7 @@ const Profile = () => {
             <input
               type={data === 'password' ? 'password' : data === 'age' ? 'number' : 'text'}
               defaultValue={userData[property].data}
-              className='p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
+              className='p-3 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
               id={data}
             />
           </div>
@@ -119,7 +119,7 @@ const Profile = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-400 to-gray-800 p-4">
+    <div className="min-h-screen bg-gradient-to-b from-purple-100 to-blue-600 p-4">
       <form
         className='max-w-3xl mx-auto p-6 rounded-lg space-y-6 text-center'
         id="userDetailsForm"
