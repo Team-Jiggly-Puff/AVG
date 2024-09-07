@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 interface PollCardProps {
   topic: string;
   pollId: string;
@@ -8,20 +8,17 @@ interface PollCardProps {
 const PollCard: React.FC<PollCardProps> = ({pollId,topic,color,className}) => {
   console.log(color);
   return (
-    <div className={`p-4 border rounded-lg ${className}`}>
-      <div className={`text-lg font-semibold`} style={{ color }}>
-        {topic}
-      </div>
+    <div style={cardStyle} className={`flex items-center bg-blue-200 justify-center transition-all duration-300 h-[80%] w-[full] hover:bg-purple-700 hover:text-white hover:scale-125 text-center`}>
+      <div style={{color:color}} className="hover:text-white" >{topic}</div>
     </div>
   );
 };
 
 const cardStyle: React.CSSProperties = {
-  border: '1px solid #ccc',
+  border: '1px solid blue',
   padding: '10px',
   margin: '10px',
   borderRadius: '5px',
-  display: 'inline-block',
 };
 
 export default PollCard;

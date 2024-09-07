@@ -1,6 +1,6 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
 import session from 'express-session';
-import passport from '../config/passport';
+// import passport from '../config/passport';
 import cookieParser from 'cookie-parser';
 import path from 'path';
 import dotenv from 'dotenv';
@@ -9,7 +9,7 @@ import CustomError from '../common/types/pollTypes';
 import userRoutes from './routes/userRoutes';
 import pollRoutes from './routes/pollRoutes';
 import { SESSION_SECRET } from '../utils/secrets';
-import '../config/passport';
+// import '../config/passport';
 const { getSpecificPoll, createPoll, getAllTopics } = require('./controllers/pollController.ts');
 const { getUser } = require('./controllers/userController.ts');
 
@@ -24,37 +24,37 @@ app.use(express.static(path.join(__dirname,'..','..','build')));
 
 app.use(cookieParser());
 
-app.use(session({
-    secret: SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false } // should be set to true if using HTTPS but rn no
-}));
+// app.use(session({
+//     secret: SESSION_SECRET,
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: { secure: false } // should be set to true if using HTTPS but rn no
+// }));
 
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 app.use('/api/users', userRoutes);
 app.use('/api/polls', pollRoutes);
-app.use('/auth', authRoutes)
+// app.use('/auth', authRoutes)
 
-app.get('/', (req: Request, res: Response, next: NextFunction) => {
-    try {
-        console.log('I AM GETTING HIT');
-        res.send(path.join(__dirname,'..','build','index.html'));
-    } catch (err) {
-        return next({
-            log: 'Error sending index.html to client',
-            message: { err: 'Server error loading page'}
-        });
-    }
-});
+// app.get('/', (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//         console.log('I AM GETTING HIT');
+//         res.send(path.join(__dirname,'..','build','index.html'));
+//     } catch (err) {
+//         return next({
+//             log: 'Error sending index.html to client',
+//             message: { err: 'Server error loading page'}
+//         });
+//     }
+// });
 
-app.get('*',(req: Request, res: Response) => {
-    console.log('I AM GETTING HIT');
-    console.log(path.join(__dirname,'..','..','build','index.html'));
-    res.sendFile(path.join(__dirname,'..','..','build','index.html'));
-});
+// app.get('*',(req: Request, res: Response) => {
+//     console.log('I AM GETTING HIT');
+//     console.log(path.join(__dirname,'..','..','build','index.html'));
+//     res.sendFile(path.join(__dirname,'..','..','build','index.html'));
+// });
 
 app.use((err: CustomError, req: Request, res: Response, next: NextFunction) => {
     const status = err.status || 500;
@@ -66,6 +66,13 @@ app.use((err: CustomError, req: Request, res: Response, next: NextFunction) => {
         }
     })
 })
-app.listen(port, () => {
+const server = app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
+});
+
+process.on('SIGINT', () => {
+  server.close(() => {
+    console.log('Server closed');
+    process.exit(0);
+  });
 });

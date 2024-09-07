@@ -32,8 +32,8 @@ FROM polls;
 `;
 
 const getQuestionsByPoll = `
-SELECT question, options_type
-FROM questions
+SELECT q._id, q.question, options_type
+FROM questions as q
 WHERE poll_id = $1;
 `;
 

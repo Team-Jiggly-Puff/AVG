@@ -1,19 +1,26 @@
 import React, { useEffect , useState } from "react";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 interface pollInfo{
   topic:string,
   created_by:number,
   questions:Array<Object>
 }
+
+interface statsInfo{
+  options:Array<Object>
+}
+
 interface Option {
   option: string;
   id: number;
 }
 const Poll = () => {
+  const navigate = useNavigate();
   const {pollId} = useParams();
 
-  const navigate = useNavigate();
+ 
 
   const [pollInfo,changePollInfo] = useState<pollInfo>({
     topic:'',
@@ -27,8 +34,15 @@ const Poll = () => {
       const pollInfo = await fetch(`/api/polls/poll/${pollId}`).then(data=>data.json());
       changePollInfo(pollInfo);
     }
-
+    const getStatsInfo = async () => {
+      const statsInfo = await fetch(`/api/polls/stats/${pollId}`).then(data=>data.json());
+      console.log('statsInfo:', statsInfo);
+      
+    };
+    
     getPollInfo();
+    // getStatsInfo();
+
   },[])
 
   console.log('pollInfo', pollInfo);
@@ -36,6 +50,7 @@ const Poll = () => {
   const pollQuestions = pollInfo.questions;
 
   const [selectedOptions, setSelectedOptions] = useState<{ question: string, optionId: number }[]>([]);
+ 
 
   const handleOptionClick = (question: string, optionId: number) => {
     console.log('I AM BEING CLICKED');
@@ -119,4 +134,4 @@ const Poll = () => {
 ))
 }
 
-export default Poll;
+export default Poll
