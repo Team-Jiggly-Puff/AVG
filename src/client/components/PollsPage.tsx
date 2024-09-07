@@ -12,6 +12,11 @@ interface Topic{
 interface Response{
   topic:string;
   questions:{}[]
+  error?:{
+    log:string,
+    message:string,
+    status:string
+  } | any
 }
 
 const PollsPage = () => {
@@ -24,13 +29,13 @@ const PollsPage = () => {
       try {
         const [topicsResponse, responsesResponse] = await Promise.all([
           fetch('/api/polls/topics').then(response => response.json() as Promise<Topic[]>),
-          fetch('/api/users/responses').then(response => response.json() as Promise<Response[]>)
+          fetch('/api/users/responses').then(response => response.json() as Promise<Response[]>),
         ]);
-        console.log(topicsResponse,'topics');
-        if(topicsResponse) changeTopics(topicsResponse);
+        const data = await fetch('/api/users/verify').then(data=>console.log(data));
+        if(!Object.keys(topicsResponse).includes('eror')) changeTopics(topicsResponse);
 
-        if(responsesResponse) changeResponses(responsesResponse);
-        if(topicsResponse && responsesResponse){
+        if(!Object.keys(responsesResponse).includes('error') && !Object.keys(topicsResponse).includes('eror')){
+          changeResponses(responsesResponse);
           const common = topicsResponse.map(topicItem => topicItem.topic).filter(topic => responsesResponse.some(responseItem => responseItem.topic === topic));
           changeCommonTopics(common);
         }
@@ -41,23 +46,32 @@ const PollsPage = () => {
 
     fetchData();
   }, [location.state?.data]);
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-gray-400 to-gray-800 p-4">
+      <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
+        Available Polls
+      </h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {topics.map((topic) => {
+          const isCommon = commonTopics.includes(topic.topic);
 
-  const gridStyle: React.CSSProperties = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', // Responsive columns
-    gap: '10px', // Space between grid items
-  };
-  return(
-    <div style={gridStyle}>
-    {topics.map((topic)=>{
-      const isCommon = commonTopics.includes(topic.topic);
-      console.log(commonTopics,'common');
-      console.log(topic.topic,'topic');
-      {console.log('pollcard generated')}
-      return <Link key={topic._id} to={`/poll/${topic._id}`}><PollCard key={topic._id} pollId={topic._id} topic={topic.topic} color={isCommon ? 'grey':'black'}/></Link>
-    })}
+          return (
+            <Link key={topic._id} to={`/poll/${topic._id}`}>
+              <PollCard
+                key={topic._id}
+                pollId={topic._id}
+                topic={topic.topic}
+                color={isCommon ? "gray" : "black"}
+                className={`p-4 rounded-lg shadow-lg hover:shadow-2xl transition-transform transform hover:scale-105 ${
+                  isCommon ? "bg-blue-200" : "bg-white"
+                }`}
+              />
+            </Link>
+          );
+        })}
+      </div>
     </div>
-  )
-}
+  );
+};
 
 export default PollsPage;

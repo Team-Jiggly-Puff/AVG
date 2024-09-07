@@ -72,7 +72,7 @@ const Poll = () => {
   const topic = {topic:pollInfo.topic}
 
   return((
-    <div className="flex flex-col items-center p-4">
+    <div className="flex flex-col items-center min-h-screen p-4 bg-gradient-to-b from-gray-400 to-gray-800 p-4">
       {pollInfo && (
         <>
           <div className="text-2xl font-bold mb-6">

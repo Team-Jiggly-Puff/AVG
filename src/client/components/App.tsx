@@ -8,7 +8,7 @@ import Poll from './Poll';
 import Profile from './Profile';
 import Login from './Login';
 import "bootstrap/dist/css/bootstrap.min.css";
-
+import ProtectedRoute from './ProtectedRoute'
 import Layout from './Layout';
 import PollsPage from './PollsPage';
 import PollCard from './PollCard';
@@ -24,7 +24,7 @@ const App = () => {
           <Route path='/' element={<Layout/>}>
             <Route path='Home' element = {<Home/>}></Route>
             <Route path='polls' element={<PollsPage/>}></Route>
-            <Route path='poll/:pollId' element={<Poll />}></Route>
+            <Route path='poll/:pollId' element={<ProtectedRoute element={<Poll/>} />}></Route>
             <Route path='profile' element={<Profile/>}></Route>
             <Route path='login' element={<Login/>}></Route>
           </Route>
