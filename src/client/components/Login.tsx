@@ -70,7 +70,7 @@ const Login = () => {
         </label>
         <input 
           type='text' 
-          className='p-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full'
+          className='p-1 border-black rounded-lg focus:outline-none bg-black-100 focus:ring-2 focus:ring-blue-500 w-full'
           id='email'
         />
       </div>
@@ -83,25 +83,25 @@ const Login = () => {
         </label>
         <input 
           type='password'
-          className='p-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full'
+          className='p-1 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full'
           id='password'
         />
       </div>
     </form>
     <button 
-      className='w-full px-4 py-2 text-black rounded-lg bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-4'
+      className='w-full px-4 py-2 text-black rounded-lg bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-4'
       onClick={login}
     >
       Log in
     </button>
     <button 
-      className='w-full px-4 py-2 text-black rounded-lg bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2'
+      className='w-full px-4 py-2 text-black rounded-lg bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2'
       onClick={() => { setCreateAccountFormVisible(true); setLoginFormVisible(false); }}
     >
       Create Account
     </button>
     <button 
-      className='w-full px-4 py-2 text-black rounded-lg bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2'
+      className='w-full px-4 py-2 text-black rounded-lg bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2'
       onClick={googleLogin}
     >
       Log in with Google
@@ -125,7 +125,7 @@ const Login = () => {
       </label>
       <input 
         type='text' 
-        className='p-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full'
+        className='p-1 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full '
         id='email'
       />
     </div>
@@ -138,7 +138,7 @@ const Login = () => {
       </label>
       <input 
         type='text' 
-        className='p-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full'
+        className='p-1 border-black rounded-lg bg-black-100 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full'
         id='username'
       />
     </div>
@@ -151,7 +151,7 @@ const Login = () => {
       </label>
       <input 
         type='password'
-        className='p-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full'
+        className='p-1 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full'
         id='password'
       />
     </div>
@@ -164,7 +164,7 @@ const Login = () => {
       </label>
       <input 
         type='number' 
-        className='p-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full'
+        className='p-1 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full'
         id='age'
       />
     </div>
@@ -177,19 +177,19 @@ const Login = () => {
       </label>
       <input 
         type='text' 
-        className='p-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full'
+        className='p-1 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full'
         id='region'
       />
     </div>
   </form>
   <button 
-    className='w-full px-4 py-2 bg-blue-600 text-black rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-4'
+    className='w-full px-4 py-2 bg-blue-500 text-black rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-4'
     onClick={createAccount}
   >
     Create Account
   </button>
   <button 
-    className='w-full px-4 py-2 bg-blue-600 text-black rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2'
+    className='w-full px-4 py-2 bg-blue-500 text-black rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2'
     onClick={() => { setCreateAccountFormVisible(false); setLoginFormVisible(true); }}
   >
     Back to Login Form
@@ -198,7 +198,7 @@ const Login = () => {
   );
 
   return (
-    <div className=" min-h-screen bg-gradient-to-b from-gray-400 to-gray-800 p-4">
+    <div className=" min-h-screen bg-gradient-to-b from-purple-100 to-blue-600 p-4">
       {loginFormVisible ? loginForm : null}
       {createAccountFormVisible ? createAccountForm : null}
       {!createAccountFormVisible && !loginFormVisible ? 'Already logged in!' : null}

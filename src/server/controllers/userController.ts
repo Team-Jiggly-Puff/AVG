@@ -72,6 +72,10 @@ const getUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const signInUserOAuth = async (req: Request, res: Response, next: NextFunction) => {
+
+};
+
 const signInUser = async (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body;
 
@@ -212,6 +216,11 @@ const getUserResponses = async (req: Request, res: Response, next: NextFunction)
   }
 };
 
+const signOutUser = async (req: Request, res: Response, next: NextFunction) => {
+  res.clearCookie('loginToken');
+  next();
+};
+
 
 
 
@@ -221,5 +230,6 @@ module.exports = {
   getUserResponses,
   signInUser,
   verifyUser,
+  signOutUser,
   updateUser
 };

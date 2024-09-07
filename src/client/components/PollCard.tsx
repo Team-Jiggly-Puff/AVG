@@ -1,27 +1,35 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 interface PollCardProps {
   topic: string;
-  pollId: string;
-  color:string;
-  className?:string;
+  boolean?:boolean;
 }
-const PollCard: React.FC<PollCardProps> = ({pollId,topic,color,className}) => {
-  console.log(color);
-  return (
-    <div className={`p-4 border rounded-lg ${className}`}>
-      <div className={`text-lg font-semibold`} style={{ color }}>
+const PollCard: React.FC<PollCardProps> = ({topic,boolean}) => {
+  if(boolean){
+    return(
+    <div style={cardStyle} className={`flex items-center bg-green-200 justify-center transition-all duration-300 h-[80%] w-[full] hover:bg-green-700 hover:text-white hover:scale-125 text-center`}>
+      <div>
         {topic}
-      </div>
+        <div>Completed</div>
+        </div>
     </div>
-  );
+    )
+  }else{
+    return(
+      <div style={cardStyle} className={`flex items-center bg-red-300 justify-center transition-all duration-300 h-[80%] w-[full] hover:bg-red-700 hover:text-white hover:scale-125 text-center`}>
+        <div>
+          {topic}
+          <div>Not Completed</div>
+          </div>
+      </div>
+    );
+  }
 };
 
 const cardStyle: React.CSSProperties = {
-  border: '1px solid #ccc',
+  border: '1px solid blue',
   padding: '10px',
   margin: '10px',
   borderRadius: '5px',
-  display: 'inline-block',
 };
 
 export default PollCard;

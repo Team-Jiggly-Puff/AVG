@@ -1,15 +1,22 @@
 const db = require('../models/dbClient');
 const { NextFunction } = require('express');
 import { Request, Response, NextFunction } from 'express';
-const { postPoll, postQuestion, postOptions, getPollFull, getTopics } = require('../queries/pollQueries.ts');
-const { postResponse } = require('../queries/responseQueries.ts');
+const { 
+  postPoll, 
+  postQuestion, 
+  postOptions, 
+  getPollFull, 
+  getTopics, 
+  getQuestionsByPoll 
+} = require('../queries/pollQueries.ts');
+const { postResponse, getResponsesByQuestion } = require('../queries/responseQueries.ts');
 import { Poll, Question, Option } from '../../common/types/pollTypes';
 
 
 const createPoll = async (req: Request, res: Response, next: NextFunction) => {
   const user = res.locals.user;
   console.log('user:', user);
-  const { newPollObj } = req.body;
+  const { newPollObj, user_id } = req.body;
   const { topic, questions } = newPollObj;
 
   // a single client needs to be used over a pool for transactional queries
@@ -19,7 +26,7 @@ const createPoll = async (req: Request, res: Response, next: NextFunction) => {
     
     await client.query('BEGIN').then(() => console.log('Transaction started'));
     
-    const newPoll = await client.query(postPoll, [topic, user._id]);
+    const newPoll = await client.query(postPoll, [topic, user_id]);
     const newPoll_id = newPoll.rows[0]._id;
     console.log('newPoll_id:', newPoll_id);
 
@@ -139,9 +146,65 @@ const respondToPoll = async (req: Request, res: Response, next: NextFunction) =>
   }
 };
 
+const getStats = async (req: Request, res: Response, next: NextFunction) => {
+  const { id } = req.params;
+
+  interface optionsTotalObject {
+    _id: number,
+    question: string,
+    option: string,
+    topic: string,
+    response_count: string,
+    percentage?: number 
+  }
+
+  const client = await db.connect();
+  try{
+    await client.query('BEGIN').then(()=>{console.log('Transaction started')});
+    const questionResponse = await client.query(getQuestionsByPoll, [id]);
+    const questions = questionResponse.rows;
+    console.log('questions:', questions);
+
+    for (let question of questions){
+      console.log('question:', question);
+      const responsesResponse = await client.query(getResponsesByQuestion, [question._id]);
+      const optionsTotals = responsesResponse.rows;
+      console.log('optionsTotals:', optionsTotals);
+
+      //get the total number of responses for the question
+      let totalResponses = 0;
+      optionsTotals.forEach((option:optionsTotalObject) => {
+        totalResponses += parseInt(option.response_count);
+      });
+      console.log('totalResponses:', totalResponses);
+
+      //calculate the percentage of each option
+      optionsTotals.map((option:optionsTotalObject) => {
+        option.percentage = Math.round((parseInt(option.response_count) / totalResponses) * 100);
+        return option;
+      });
+      question.optionTotals = optionsTotals;
+
+      console.log('question with percentages:', question);
+     
+    }
+    res.locals.stats = questions;
+    next();
+  }
+  catch(err){
+    return next({
+      log: 'Error getting stats',
+      message: { err: 'Server error getting stats'}
+    });
+  }
+}; 
+
+
+
 module.exports = {
   createPoll,
   getSpecificPoll,
   getAllTopics,
-  respondToPoll
+  respondToPoll,
+  getStats
 }
