@@ -12,21 +12,21 @@ const Navigation = () => {
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
           <Nav.Link
-            className="ml-3 rounded-md bg-purple-500 text-white transition-all duration-300 hover:-translate-y-1 hover:bg-purple-700"
+            className="ml-3 rounded-md bg-blue-500 text-black transition-all duration-300 hover:-translate-y-1 hover:bg-purple-700"
             as={Link}
             to="/home"
           >
             Home
           </Nav.Link>
           <Nav.Link
-            className="ml-3 rounded-md bg-purple-500 text-white transition-all duration-300 hover:-translate-y-1 hover:bg-purple-700"
+            className="ml-3 rounded-md bg-blue-500 text-black transition-all duration-300 hover:-translate-y-1 hover:bg-purple-700"
             as={Link}
             to="/polls"
           >
             Polls
           </Nav.Link>
           <Nav.Link
-            className="ml-3 rounded-md bg-purple-500 text-white transition-all duration-300 hover:-translate-y-1 hover:bg-purple-700"
+            className="ml-3 rounded-md bg-blue-500 text-black transition-all duration-300 hover:-translate-y-1 hover:bg-purple-700"
             as={Link}
             to="/profile"
           >

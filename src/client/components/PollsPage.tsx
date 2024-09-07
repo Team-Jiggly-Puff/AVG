@@ -1,10 +1,7 @@
 import React from "react";
 import { useEffect,useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PollCard from "./PollCard";
-import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
-
 interface Topic{
   topic:string;
   _id:string;
@@ -27,31 +24,27 @@ const PollsPage = () => {
     
   const [responses,changeResponses] = useState<Response[]>([]);
   const [commonTopics,changeCommonTopics] = useState<string[]>([]);
-  const location = useLocation();
   useEffect(() => {
-    const fetchData = async () => {
+    (async function fetchData(){
       try {
         const [topicsResponse, responsesResponse] = await Promise.all([
           fetch('/api/polls/topics').then(response => response.json() as Promise<Topic[]>),
           fetch('/api/users/responses').then(response => response.json() as Promise<Response[]>),
         ]);
-        console.log('topicsResponse:', topicsResponse);
-        console.log('responsesResponse:', responsesResponse);
-        const data = await fetch('/api/users/verify').then(data=>console.log(data));
-        if(!Object.keys(topicsResponse).includes('eror')) changeTopics(topicsResponse);
+        console.log(responsesResponse);
+        if(!Object.keys(topicsResponse).includes('error')) changeTopics(topicsResponse);
 
-        if(!Object.keys(responsesResponse).includes('error') && !Object.keys(topicsResponse).includes('eror')){
+        if(!Object.keys(responsesResponse).includes('error') && !Object.keys(topicsResponse).includes('error')){
           changeResponses(responsesResponse);
           const common = topicsResponse.map(topicItem => topicItem.topic).filter(topic => responsesResponse.some(responseItem => responseItem.topic === topic));
           console.log('common:', common);
           changeCommonTopics(common);
+          console.log(common);
         }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
-    };
-
-    fetchData();
+    })();
     animate(true);
   }, []);
 
@@ -78,7 +71,7 @@ const PollsPage = () => {
             // console.log(commonTopics,'common');
             // console.log(topic.topic,'topic');
             {console.log('pollcard generated')}
-            return <Link className={` w-full h-[15vh]`} key={topic._id} to={`/poll/${topic._id}`}><PollCard key={topic._id} pollId={topic._id} topic={topic.topic} color={isCommon ? 'grey':'black'}/></Link>
+            return <Link className={` w-full h-[15vh]`} key={topic._id} to={`/poll/${topic._id}`}><PollCard key={topic._id} topic={topic.topic} boolean={isCommon}/></Link>
           })}
         
         </div>
