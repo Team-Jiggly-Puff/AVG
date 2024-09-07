@@ -57,136 +57,148 @@ const Login = () => {
     if (response.ok) navigate('/Home');
   }
   const googleLogin = () => { };
-
   const loginForm = (
-    <div>
-      <form
-        className='max-w-3xl mx-auto p-6 bg-white rounded-lg space-y-6'
-        id="loginForm"
-      >
+    <div className="flex items-center justify-center">
+  <div className="max-w-3xl w-full p-6 rounded-lg">
+    <form className='space-y-6' id="loginForm">
+      <div className="flex items-center mb-4">
         <label 
-          className='text-lg font-semibold mb-2 capitalize text-gray-700'
+          className='text-lg font-semibold capitalize text-gray-700 w-1/3 text-right pr-4'
           htmlFor='email'
         >
           Email:
         </label>
         <input 
           type='text' 
-          className='p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
+          className='p-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full'
           id='email'
         />
+      </div>
+      <div className="flex items-center mb-4">
         <label 
-          className='text-lg font-semibold mb-2 capitalize text-gray-700'
+          className='text-lg font-semibold capitalize text-gray-700 w-1/3 text-right pr-4'
           htmlFor='password'
         >
           Password:
         </label>
         <input 
           type='password'
-          className='p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
+          className='p-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full'
           id='password'
         />
-      </form>
-      <button 
-        className='w-full px-4 py-2 bg-blue-600 text-black rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500'
-        onClick={login}
-      >
-        Log in
-      </button>
-      <button 
-        className='w-full px-4 py-2 bg-blue-600 text-black rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500'
-        onClick={() => { setCreateAccountFormVisible(true); setLoginFormVisible(false); }}
-      >
-        Create Account
-      </button>
-      <button 
-        className='w-full px-4 py-2 bg-blue-600 text-black rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500'
-        onClick={googleLogin}
-      >
-        Log in with Google
-      </button>
-    </div>
+      </div>
+    </form>
+    <button 
+      className='w-full px-4 py-2 text-black rounded-lg bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-4'
+      onClick={login}
+    >
+      Log in
+    </button>
+    <button 
+      className='w-full px-4 py-2 text-black rounded-lg bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2'
+      onClick={() => { setCreateAccountFormVisible(true); setLoginFormVisible(false); }}
+    >
+      Create Account
+    </button>
+    <button 
+      className='w-full px-4 py-2 text-black rounded-lg bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2'
+      onClick={googleLogin}
+    >
+      Log in with Google
+    </button>
+  </div>
+</div>
   );
 
   const createAccountForm = (
-       <div>
-      <form
-        className='max-w-3xl mx-auto p-6 bg-white rounded-lg space-y-6'
-        id="loginForm"
+       <div className="max-w-3xl mx-auto p-6">
+  <form
+    className='space-y-6'
+    id="loginForm"
+  >
+    <div className="flex items-center mb-2">
+      <label 
+        className='text-lg font-semibold capitalize text-gray-700 w-1/4'
+        htmlFor='email'
       >
-        <label 
-          className='text-lg font-semibold mb-2 capitalize text-gray-700'
-          htmlFor='email'
-        >
-          Email:
-        </label>
-        <input 
-          type='text' 
-          className='p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-          id='email'
-        />
-        <label 
-          className='text-lg font-semibold mb-2 capitalize text-gray-700'
-          htmlFor='username'
-        >
-          Username:
-        </label>
-        <input 
-          type='text' 
-          className='p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-          id='username'
-        />
-        <label 
-          className='text-lg font-semibold mb-2 capitalize text-gray-700'
-          htmlFor='password'
-        >
-          Password:
-        </label>
-        <input 
-          type='password'
-          className='p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-          id='password'
-        />
-        <label 
-          className='text-lg font-semibold mb-2 capitalize text-gray-700'
-          htmlFor='age'
-        >
-          Age:
-        </label>
-        <input 
-          type='number' 
-          className='p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-          id='age'
-        />
-        <label 
-          className='text-lg font-semibold mb-2 capitalize text-gray-700'
-          htmlFor='region'
-        >
-          Region:
-        </label>
-        <input 
-          type='text' 
-          className='p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-          id='region'
-        />
-      </form>
-      <button 
-        className='w-full px-4 py-2 bg-blue-600 text-black rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500'
-        onClick={createAccount}
-      >
-        Create Account
-      </button>
-      <button 
-        className='w-full px-4 py-2 bg-blue-600 text-black rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500'
-        onClick={() => { setCreateAccountFormVisible(false); setLoginFormVisible(true); }}
-      >
-        Back to Login Form
-      </button>
+        Email:
+      </label>
+      <input 
+        type='text' 
+        className='p-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full'
+        id='email'
+      />
     </div>
+    <div className="flex items-center mb-2">
+      <label 
+        className='text-lg font-semibold capitalize text-gray-700 w-1/4'
+        htmlFor='username'
+      >
+        Username:
+      </label>
+      <input 
+        type='text' 
+        className='p-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full'
+        id='username'
+      />
+    </div>
+    <div className="flex items-center mb-2">
+      <label 
+        className='text-lg font-semibold capitalize text-gray-700 w-1/4'
+        htmlFor='password'
+      >
+        Password:
+      </label>
+      <input 
+        type='password'
+        className='p-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full'
+        id='password'
+      />
+    </div>
+    <div className="flex items-center mb-2">
+      <label 
+        className='text-lg font-semibold capitalize text-gray-700 w-1/4'
+        htmlFor='age'
+      >
+        Age:
+      </label>
+      <input 
+        type='number' 
+        className='p-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full'
+        id='age'
+      />
+    </div>
+    <div className="flex items-center mb-2">
+      <label 
+        className='text-lg font-semibold capitalize text-gray-700 w-1/4'
+        htmlFor='region'
+      >
+        Region:
+      </label>
+      <input 
+        type='text' 
+        className='p-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full'
+        id='region'
+      />
+    </div>
+  </form>
+  <button 
+    className='w-full px-4 py-2 bg-blue-600 text-black rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-4'
+    onClick={createAccount}
+  >
+    Create Account
+  </button>
+  <button 
+    className='w-full px-4 py-2 bg-blue-600 text-black rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2'
+    onClick={() => { setCreateAccountFormVisible(false); setLoginFormVisible(true); }}
+  >
+    Back to Login Form
+  </button>
+</div>
   );
 
   return (
-    <div>
+    <div className=" min-h-screen bg-gradient-to-b from-gray-400 to-gray-800 p-4">
       {loginFormVisible ? loginForm : null}
       {createAccountFormVisible ? createAccountForm : null}
       {!createAccountFormVisible && !loginFormVisible ? 'Already logged in!' : null}

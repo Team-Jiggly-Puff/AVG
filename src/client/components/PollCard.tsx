@@ -3,12 +3,15 @@ interface PollCardProps {
   topic: string;
   pollId: string;
   color:string;
+  className?:string;
 }
-const PollCard: React.FC<PollCardProps> = ({pollId,topic,color}) => {
+const PollCard: React.FC<PollCardProps> = ({pollId,topic,color,className}) => {
   console.log(color);
   return (
-    <div style={cardStyle}>
-      <div style={{color:color}}>{topic}</div>
+    <div className={`p-4 border rounded-lg ${className}`}>
+      <div className={`text-lg font-semibold`} style={{ color }}>
+        {topic}
+      </div>
     </div>
   );
 };

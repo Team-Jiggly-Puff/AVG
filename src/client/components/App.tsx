@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route,Routes } from 'react-router-dom';
+import { BrowserRouter, Route,Routes,Navigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../hooks';
 import Home from './Home';
 import { Provider } from 'react-redux';
@@ -8,23 +8,23 @@ import Poll from './Poll';
 import Profile from './Profile';
 import Login from './Login';
 import "bootstrap/dist/css/bootstrap.min.css";
-
+import ProtectedRoute from './ProtectedRoute'
 import Layout from './Layout';
 import PollsPage from './PollsPage';
 import PollCard from './PollCard';
 import '../../../build/styles.css'
 import { ProfileData } from 'types/userTypes';
-
 const App = () => {
   const userData: ProfileData = useAppSelector(state => state.user);
   console.log(userData);
   return (
       <BrowserRouter>
         <Routes>
+        <Route path='/' element={<Navigate to='/home' />} />
           <Route path='/' element={<Layout/>}>
             <Route path='Home' element = {<Home/>}></Route>
             <Route path='polls' element={<PollsPage/>}></Route>
-            <Route path='poll/:pollId' element={<Poll />}></Route>
+            <Route path='poll/:pollId' element={<ProtectedRoute element={<Poll/>} />}></Route>
             <Route path='profile' element={<Profile/>}></Route>
             <Route path='login' element={<Login/>}></Route>
           </Route>

@@ -20,10 +20,19 @@ SET username = $2, email = $3, password = $4, age = $5, region = $6
 WHERE _id = $1;
 `
 
+const getUsernames = `
+SELECT username FROM users
+`
+
+const getEmails = `
+SELECT email FROM users
+`
 
 module.exports = {
     getUserByID,
     postUser,
     getUserByEmail,
-    updateUserByID
+    updateUserByID,
+    getUsernames,
+    getEmails
 }
