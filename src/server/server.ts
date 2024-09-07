@@ -66,6 +66,13 @@ app.use((err: CustomError, req: Request, res: Response, next: NextFunction) => {
         }
     })
 })
-app.listen(port, () => {
+const server = app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
+});
+
+process.on('SIGINT', () => {
+  server.close(() => {
+    console.log('Server closed');
+    process.exit(0);
+  });
 });

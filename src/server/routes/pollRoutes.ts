@@ -1,5 +1,11 @@
 import express, { Request, Response, NextFunction } from 'express';
-const { createPoll, getSpecificPoll, getAllTopics, respondToPoll } = require('../controllers/pollController.ts');
+const { 
+    createPoll, 
+    getSpecificPoll, 
+    getAllTopics, 
+    respondToPoll, 
+    getStats 
+} = require('../controllers/pollController.ts');
 const { getUser,verifyUser } = require('../controllers/userController.ts');
 const router = express.Router();
 
@@ -19,5 +25,8 @@ router.post('/vote', verifyUser, respondToPoll, (req: Request, res: Response, ne
     res.status(200).json('Poll response recorded');
 });
 
+router.get('/stats/:id', getStats, (req: Request, res: Response, next: NextFunction) => {
+    res.status(200).json(res.locals.stats);
+});
 
 export default router;

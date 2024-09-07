@@ -29,9 +29,32 @@ DELETE FROM responses
 WHERE _id = $1
 `;
 
+const getResponsesByPoll = `
+SELECT o._id o.option, q.question p.topic 
+FROM responses r
+JOIN options o ON r.option_id = o._id
+JOIN questions q ON o.question_id = q._id
+JOIN polls p ON q.poll_id = p._id
+WHERE p._id = $1
+ORDER BY P._id, q._id, o._id
+`;
+
+const getResponsesByQuestion = `
+SELECT o._id, o.option, q.question, p.topic, COUNT(r.option_id) AS response_count
+FROM responses r
+JOIN options o ON r.option_id = o._id
+JOIN questions q ON o.question_id = q._id
+JOIN polls p ON q.poll_id = p._id
+WHERE q._id = $1
+GROUP BY o._id, q._id, p._id
+ORDER BY q._id, o._id`;
+
+
 module.exports = {
     postResponse,
     getResponsesByUser,
     changeResponse,
     deleteResponseBy_id,
+    getResponsesByPoll,
+    getResponsesByQuestion
 }
