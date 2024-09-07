@@ -43,6 +43,7 @@ const PollsPage = () => {
         if(!Object.keys(responsesResponse).includes('error') && !Object.keys(topicsResponse).includes('eror')){
           changeResponses(responsesResponse);
           const common = topicsResponse.map(topicItem => topicItem.topic).filter(topic => responsesResponse.some(responseItem => responseItem.topic === topic));
+          console.log('common:', common);
           changeCommonTopics(common);
         }
       } catch (error) {
@@ -74,8 +75,8 @@ const PollsPage = () => {
         <div style={gridStyle} className="w-full mr-10 mt-10">
           {topics.map((topic)=>{
             const isCommon = commonTopics.includes(topic.topic);
-            console.log(commonTopics,'common');
-            console.log(topic.topic,'topic');
+            // console.log(commonTopics,'common');
+            // console.log(topic.topic,'topic');
             {console.log('pollcard generated')}
             return <Link className={` w-full h-[15vh]`} key={topic._id} to={`/poll/${topic._id}`}><PollCard key={topic._id} pollId={topic._id} topic={topic.topic} color={isCommon ? 'grey':'black'}/></Link>
           })}
