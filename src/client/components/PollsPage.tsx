@@ -26,6 +26,8 @@ const PollsPage = () => {
           fetch('/api/polls/topics').then(response => response.json() as Promise<Topic[]>),
           fetch('/api/users/responses').then(response => response.json() as Promise<Response[]>)
         ]);
+        console.log('topicsResponse:', topicsResponse);
+        console.log('responsesResponse:', responsesResponse);
 
         changeTopics(topicsResponse);
 

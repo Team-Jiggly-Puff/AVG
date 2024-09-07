@@ -24,12 +24,12 @@ app.use(express.static(path.join(__dirname,'..','..','build')));
 
 app.use(cookieParser());
 
-app.use(session({
-    secret: SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false } // should be set to true if using HTTPS but rn no
-}));
+// app.use(session({
+//     secret: SESSION_SECRET,
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: { secure: false } // should be set to true if using HTTPS but rn no
+// }));
 
 // app.use(passport.initialize());
 // app.use(passport.session());

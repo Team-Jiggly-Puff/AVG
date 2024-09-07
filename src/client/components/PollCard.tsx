@@ -7,8 +7,8 @@ interface PollCardProps {
 const PollCard: React.FC<PollCardProps> = ({pollId,topic,color}) => {
   console.log(color);
   return (
-    <div style={cardStyle}>
-      <div style={{color:color}} className={`flex items-center justify-center transition-all duration-300 h-[80%] w-[80%] hover:bg-purple-700 hover:text-white hover:scale-125 text-center`}>{topic}</div>
+    <div style={cardStyle} className={`flex items-center justify-center transition-all duration-300 h-[80%] w-[80%] hover:bg-purple-700 hover:text-white hover:scale-125 text-center`}>
+      <div style={{color:color}} >{topic}</div>
     </div>
   );
 };
