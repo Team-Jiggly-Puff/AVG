@@ -2,7 +2,6 @@ import React from "react";
 import { useEffect,useState } from "react";
 import { Link } from "react-router-dom";
 import PollCard from "./PollCard";
-import { useLocation } from "react-router-dom";
 
 interface Topic{
   topic:string;
@@ -23,29 +22,29 @@ const PollsPage = () => {
   const [topics,changeTopics] = useState<Topic[]>([]);
   const [responses,changeResponses] = useState<Response[]>([]);
   const [commonTopics,changeCommonTopics] = useState<string[]>([]);
-  const location = useLocation();
   useEffect(() => {
-    const fetchData = async () => {
+    (async function fetchData(){
       try {
         const [topicsResponse, responsesResponse] = await Promise.all([
           fetch('/api/polls/topics').then(response => response.json() as Promise<Topic[]>),
           fetch('/api/users/responses').then(response => response.json() as Promise<Response[]>),
         ]);
-        const data = await fetch('/api/users/verify').then(data=>console.log(data));
-        if(!Object.keys(topicsResponse).includes('eror')) changeTopics(topicsResponse);
+        console.log(responsesResponse);
+        if(!Object.keys(topicsResponse).includes('error')) changeTopics(topicsResponse);
 
-        if(!Object.keys(responsesResponse).includes('error') && !Object.keys(topicsResponse).includes('eror')){
+        if(!Object.keys(responsesResponse).includes('error') && !Object.keys(topicsResponse).includes('error')){
           changeResponses(responsesResponse);
           const common = topicsResponse.map(topicItem => topicItem.topic).filter(topic => responsesResponse.some(responseItem => responseItem.topic === topic));
           changeCommonTopics(common);
+          console.log(common);
         }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
-    };
+    })();
 
-    fetchData();
-  }, [location.state?.data]);
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-400 to-gray-800 p-4">
       <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">

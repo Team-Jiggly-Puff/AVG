@@ -64,8 +64,7 @@ const Poll = () => {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({option_ids:getOptionIds()})
-      });
-      navigate('/polls', { state: { refresh: true } });
+      }).then(data=>navigate(`/polls`));
     }else alert('You need to respond to every question');
   }
 
