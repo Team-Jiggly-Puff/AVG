@@ -50,7 +50,6 @@ const PollsPage = () => {
   const gridStyle: React.CSSProperties = {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', // Responsive columns
-    
     gap: '10px', // Space between grid items
   };
   return(

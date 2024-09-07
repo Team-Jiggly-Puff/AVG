@@ -7,6 +7,11 @@ interface pollInfo{
   created_by:number,
   questions:Array<Object>
 }
+
+interface statsInfo{
+  options:Array<Object>
+}
+
 interface Option {
   option: string;
   id: number;
@@ -27,6 +32,11 @@ const Poll = () => {
     created_by:0,
     questions:[{}]
   });
+
+  const [statsInfo,changeStatsInfo] = useState<statsInfo>({
+
+    options:[]
+  });
   
   useEffect(()=>{
     console.log('pollId:', pollId);
@@ -36,10 +46,13 @@ const Poll = () => {
       changePollInfo(pollInfo);
     }
     const getStatsInfo = async () => {
-      
+      const statsInfo = await fetch(`/api/polls/stats/${pollId}`).then(data=>data.json());
+      console.log('statsInfo:', statsInfo);
+      changeStatsInfo(statsInfo);
     };
     animate(true);
     getPollInfo();
+    // getStatsInfo();
 
   },[])
 
@@ -89,10 +102,7 @@ const Poll = () => {
           onClick={()=>{navigate('/polls')}}
             >Return to browse polls
           </button>
-          <div className="flex flex-column  border border-black rounded ">
-            <h3>Statistics</h3>
-
-          </div>
+          
       </div>
       <div>
         {pollQuestions.map((q:any, index) => {
@@ -123,7 +133,9 @@ const Poll = () => {
     
     <button onClick={handleSubmit}>Submit</button>
     </div>
+    
+
   ))
 }
 
-export default Poll;
+export default Poll
