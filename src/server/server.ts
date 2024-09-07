@@ -1,6 +1,6 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
 import session from 'express-session';
-import passport from '../config/passport';
+// import passport from '../config/passport';
 import cookieParser from 'cookie-parser';
 import path from 'path';
 import dotenv from 'dotenv';
@@ -9,7 +9,7 @@ import CustomError from '../common/types/pollTypes';
 import userRoutes from './routes/userRoutes';
 import pollRoutes from './routes/pollRoutes';
 import { SESSION_SECRET } from '../utils/secrets';
-import '../config/passport';
+// import '../config/passport';
 const { getSpecificPoll, createPoll, getAllTopics } = require('./controllers/pollController.ts');
 const { getUser } = require('./controllers/userController.ts');
 
@@ -31,30 +31,30 @@ app.use(session({
     cookie: { secure: false } // should be set to true if using HTTPS but rn no
 }));
 
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 app.use('/api/users', userRoutes);
 app.use('/api/polls', pollRoutes);
-app.use('/auth', authRoutes)
+// app.use('/auth', authRoutes)
 
-app.get('/', (req: Request, res: Response, next: NextFunction) => {
-    try {
-        console.log('I AM GETTING HIT');
-        res.send(path.join(__dirname,'..','build','index.html'));
-    } catch (err) {
-        return next({
-            log: 'Error sending index.html to client',
-            message: { err: 'Server error loading page'}
-        });
-    }
-});
+// app.get('/', (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//         console.log('I AM GETTING HIT');
+//         res.send(path.join(__dirname,'..','build','index.html'));
+//     } catch (err) {
+//         return next({
+//             log: 'Error sending index.html to client',
+//             message: { err: 'Server error loading page'}
+//         });
+//     }
+// });
 
-app.get('*',(req: Request, res: Response) => {
-    console.log('I AM GETTING HIT');
-    console.log(path.join(__dirname,'..','..','build','index.html'));
-    res.sendFile(path.join(__dirname,'..','..','build','index.html'));
-});
+// app.get('*',(req: Request, res: Response) => {
+//     console.log('I AM GETTING HIT');
+//     console.log(path.join(__dirname,'..','..','build','index.html'));
+//     res.sendFile(path.join(__dirname,'..','..','build','index.html'));
+// });
 
 app.use((err: CustomError, req: Request, res: Response, next: NextFunction) => {
     const status = err.status || 500;
