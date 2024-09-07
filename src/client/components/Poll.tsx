@@ -79,15 +79,14 @@ const Poll = () => {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({option_ids:getOptionIds()})
-      });
-      navigate('/polls', { state: { refresh: true } });
+      }).then(data=>{navigate('/polls',{state:{refresh:true}})});
     }else alert('You need to respond to every question');
   }
 
   const topic = {topic:pollInfo.topic}
 
   return((
-    <div className="flex flex-col items-center min-h-screen p-4 bg-gradient-to-b from-gray-400 to-gray-800 p-4">
+    <div className="flex flex-col items-center min-h-screen p-4 bg-gradient-to-b from-purple-100 to-blue-600 p-4">
       {pollInfo && (
         <>
           <div className="text-2xl font-bold mb-6">
@@ -101,8 +100,8 @@ const Poll = () => {
                   return q.options.map((option: Option, optionIndex: number) => (
                     <div
                       key={option.id}
-                      className={`inline-block p-4 border border-black rounded cursor-pointer text-center relative text-base
-                        ${isOptionSelected(q.question, option.id) ? 'bg-customBlue text-white' : 'bg-white text-black'}
+                      className={`inline-block p-4 border transition-all duration-300  border-black hover:-translate-y-1 rounded cursor-pointer text-center relative text-base
+                        ${isOptionSelected(q.question, option.id) ? 'bg-customBlue text-white' : 'bg-blue-100 hover:bg-purple-600 text-black'}
                       `}
                       onClick={() => handleOptionClick(q.question, option.id)}
                     >
@@ -114,7 +113,7 @@ const Poll = () => {
   
               return (
                 <div key={index} className="mb-6">
-                  <div className="text-lg mb-2">{q.question}</div>
+                  <div className="text-lg text-center mb-2">{q.question}</div>
                   <div className="flex flex-col gap-2">
                     {displayOptions(q.options)}
                   </div>
@@ -124,7 +123,7 @@ const Poll = () => {
           </div>
           <button 
             onClick={handleSubmit} 
-            className="mt-6 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            className="mt-6 px-4 py-2 transition-all duration-300 bg-blue-800 text-white rounded hover:scale-150 hover:bg-purple-600 "
           >
             Submit
           </button>
