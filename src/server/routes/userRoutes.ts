@@ -25,7 +25,7 @@ router.post('/update/:id', updateUser, (req: Request, res: Response, next: NextF
   res.sendStatus(200);
 })
 
-router.get('/responses', getUser, getUserResponses, (req: Request, res: Response, next: NextFunction) => {
+router.get('/responses', verifyUser, getUserResponses, (req: Request, res: Response, next: NextFunction) => {
   res.status(200).json(res.locals.pollResponses);
 });
 

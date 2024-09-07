@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect,useState } from "react";
 import { Link } from "react-router-dom";
 import PollCard from "./PollCard";
+import { useLocation } from "react-router-dom";
 
 interface Topic{
   topic:string;
@@ -17,6 +18,7 @@ const PollsPage = () => {
   const [topics,changeTopics] = useState<Topic[]>([]);
   const [responses,changeResponses] = useState<Response[]>([]);
   const [commonTopics,changeCommonTopics] = useState<string[]>([]);
+  const location = useLocation();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -24,21 +26,21 @@ const PollsPage = () => {
           fetch('/api/polls/topics').then(response => response.json() as Promise<Topic[]>),
           fetch('/api/users/responses').then(response => response.json() as Promise<Response[]>)
         ]);
+        console.log(topicsResponse,'topics');
+        if(topicsResponse) changeTopics(topicsResponse);
 
-        changeTopics(topicsResponse);
-
-        changeResponses(responsesResponse);
-
-        const common = topicsResponse.map(topicItem => topicItem.topic).filter(topic => responsesResponse.some(responseItem => responseItem.topic === topic));
-
-        changeCommonTopics(common);
+        if(responsesResponse) changeResponses(responsesResponse);
+        if(topicsResponse && responsesResponse){
+          const common = topicsResponse.map(topicItem => topicItem.topic).filter(topic => responsesResponse.some(responseItem => responseItem.topic === topic));
+          changeCommonTopics(common);
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [location.state?.data]);
 
   const gridStyle: React.CSSProperties = {
     display: 'grid',
